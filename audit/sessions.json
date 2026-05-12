@@ -1,0 +1,87 @@
+[
+  {
+    "session_id": "brainstorm-2026-05-11",
+    "architecture": "single-agent",
+    "phase": "brainstorming + spec writing",
+    "timestamp": "2026-05-11",
+    "duration": {
+      "api_ms": 300000,
+      "wall_ms": 3572000
+    },
+    "cost_usd": 0.78,
+    "tokens": {
+      "sonnet-4-6": {
+        "input": 2100,
+        "output": 14800,
+        "cache_read": 1200000,
+        "cache_write": 51400
+      },
+      "haiku-4-5": {
+        "input": 2400,
+        "output": 17,
+        "cache_read": 0,
+        "cache_write": 0
+      },
+      "totals": {
+        "input": 4500,
+        "output": 14817,
+        "cache_read": 1200000,
+        "cache_write": 51400
+      }
+    },
+    "context_window": {
+      "model_limit_tokens": 200000,
+      "session_fill_percent": 53,
+      "note": "53% from /usage at end of brainstorm phase"
+    },
+    "tasks": [
+      "explore project context (empty directory)",
+      "clarify scaffold + logger placement",
+      "write design spec: Info.jsx + audit logger"
+    ],
+    "skills_used": [
+      { "skill": "superpowers:brainstorming", "usage_pct": 15 },
+      { "skill": "superpowers:using-superpowers", "usage_pct": 6 }
+    ]
+  },
+  {
+    "session_id": "planning-2026-05-11",
+    "architecture": "single-agent",
+    "phase": "implementation plan writing",
+    "timestamp": "2026-05-11",
+    "duration": {
+      "api_ms": 785000,
+      "wall_ms": 4153000
+    },
+    "cost_usd": 0.81,
+    "cost_usd_note": "delta from brainstorm snapshot ($1.59 total - $0.78 brainstorm)",
+    "tokens": {
+      "sonnet-4-6": {
+        "input": 400,
+        "output": 34100,
+        "cache_read": 500000,
+        "cache_write": 36800,
+        "note": "delta from brainstorm snapshot — writing-plans was 45% of session"
+      },
+      "cumulative_session": {
+        "sonnet-4-6": { "input": 2500, "output": 48900, "cache_read": 1700000, "cache_write": 88200 },
+        "haiku-4-5":   { "input": 2400, "output": 17,    "cache_read": 0,       "cache_write": 0 },
+        "total_cost_usd": 1.59
+      }
+    },
+    "context_window": {
+      "model_limit_tokens": 200000,
+      "session_fill_percent": 64,
+      "note": "64% from /usage at end of planning phase — up from 53% after brainstorm"
+    },
+    "tasks": [
+      "write 9-task implementation plan for Info.jsx",
+      "write design system CSS (info.css)",
+      "spec coverage check + self-review"
+    ],
+    "skills_used": [
+      { "skill": "superpowers:writing-plans", "usage_pct": 45 }
+    ],
+    "observation": "writing-plans consumed 45% of session cost — most expensive phase so far"
+  }
+]
