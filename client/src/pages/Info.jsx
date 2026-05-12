@@ -387,7 +387,7 @@ function StartupsSection() {
             {ideas.map((idea, i) => (
               <li className="idea-item" key={i}>
                 <span>{idea}</span>
-                <button className="idea-remove" onClick={() => removeIdea(i)} title="remove">✓</button>
+                <button className="idea-remove" onClick={() => removeIdea(i)} aria-label="remove idea">×</button>
               </li>
             ))}
           </ul>
@@ -499,7 +499,7 @@ function PenAndPaperSection() {
 
           <div className="writing-list">
             {filtered.map(w => (
-              <div className="writing-row" key={w.id} onClick={() => toggleExpand(w.id)}>
+              <div className="writing-row" key={w.id} onClick={() => toggleExpand(w.id)} role="button" tabIndex={0} onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && toggleExpand(w.id)}>
                 <div className="writing-row__header">
                   <span className={`type-pill ${w.type === 'blog' ? 'type-pill--blog' : 'type-pill--preprint'}`}>
                     {w.type === 'blog' ? 'blog' : 'pre-print'}
@@ -515,7 +515,7 @@ function PenAndPaperSection() {
                       href={w.url}
                       style={{ color: 'var(--blue)', fontSize: 16, marginLeft: 4 }}
                       onClick={e => e.stopPropagation()}
-                      aria-label="open link"
+                      aria-label={`Open ${w.title}`}
                     >
                       ↗
                     </a>
