@@ -83,5 +83,110 @@
       { "skill": "superpowers:writing-plans", "usage_pct": 45 }
     ],
     "observation": "writing-plans consumed 45% of session cost — most expensive phase so far"
+  },
+  {
+    "session_id": "task1-scaffold-2026-05-12",
+    "architecture": "multi-agent",
+    "phase": "Task 1 — git init + Vite scaffold (subagent)",
+    "timestamp": "2026-05-12",
+    "cost_usd": 0.90,
+    "cost_usd_note": "delta from planning snapshot ($2.49 total - $1.59)",
+    "tokens": {
+      "delta_from_last_snapshot": {
+        "sonnet-4-6": { "input": 700, "output": 7200, "cache_read": 2100000, "cache_write": 43300 }
+      },
+      "cumulative_session": {
+        "sonnet-4-6": { "input": 3200, "output": 56100, "cache_read": 3800000, "cache_write": 131500 },
+        "haiku-4-5":  { "input": 2400, "output": 17, "cache_read": 0, "cache_write": 0 },
+        "total_cost_usd": 2.49
+      }
+    },
+    "context_window": {
+      "session_fill_percent": 68,
+      "note": "up from 64% after planning (+4% for Task 1 subagent + review)"
+    },
+    "subagents_used": [
+      { "role": "implementer", "model": "sonnet", "status": "DONE" },
+      { "role": "spec-reviewer", "model": "sonnet", "status": "caught leftover vite.svg — fixed inline" }
+    ],
+    "observations": [
+      "92% of session attributed to subagent-heavy sessions",
+      "cache_read spiked to 3.8M — subagents re-reading context is expensive",
+      "context at 68% with 8 tasks remaining — watching closely"
+    ]
+  },
+  {
+    "session_id": "implementation-2026-05-12",
+    "architecture": "multi-agent",
+    "phase": "Tasks 2–8 — CSS + all 5 Info.jsx sections",
+    "timestamp": "2026-05-12",
+    "cost_usd": 1.88,
+    "cost_usd_note": "delta from Task 1 snapshot ($4.37 total - $2.49)",
+    "tokens": {
+      "delta_from_last_snapshot": {
+        "sonnet-4-6": { "input": 100, "output": 31800, "cache_read": 2500000, "cache_write": 176700 }
+      },
+      "cumulative_session": {
+        "sonnet-4-6": { "input": 3300, "output": 87900, "cache_read": 6300000, "cache_write": 308200 },
+        "haiku-4-5":  { "input": 2400, "output": 17, "cache_read": 0, "cache_write": 0 },
+        "total_cost_usd": 4.37
+      }
+    },
+    "context_window": {
+      "session_fill_percent": 91,
+      "note": "91% — up from 68% after Task 1 (+23% for Tasks 2–8 subagents + 2 reviewers + fixes)"
+    },
+    "subagents_used": [
+      { "role": "CSS implementer (Task 2)", "model": "sonnet", "status": "DONE" },
+      { "role": "Info.jsx implementer (Tasks 3–8, all sections)", "model": "sonnet", "status": "DONE — 537 lines, zero compile errors" },
+      { "role": "spec-reviewer", "model": "sonnet", "status": "✅ FULLY SPEC COMPLIANT — all requirements met" },
+      { "role": "code-quality-reviewer", "model": "sonnet", "status": "2 issues found — fixed inline (keyboard a11y, remove button clarity)" }
+    ],
+    "files_produced": [
+      "client/src/styles/info.css — 307 lines",
+      "client/src/pages/Info.jsx — 537 lines"
+    ],
+    "observations": [
+      "95% of session from subagent-heavy sessions — each subagent re-reads full context via cache",
+      "cache_read hit 6.3M tokens total — main cost driver, not output",
+      "collapsing Tasks 3–8 into one subagent was the right call — saved 5 subagent round-trips",
+      "91% context at session end — this session is near its limit"
+    ]
+  },
+  {
+    "session_id": "full-session-summary-2026-05-12",
+    "event_type": "session_summary",
+    "architecture": "multi-agent",
+    "timestamp": "2026-05-12",
+    "total_cost_usd": 4.37,
+    "total_duration_api_ms": 1426000,
+    "total_duration_wall_ms": 4999000,
+    "context_window_peak_percent": 91,
+    "phases": [
+      { "phase": "brainstorm + spec", "cost_usd": 0.78, "context_pct": 53 },
+      { "phase": "writing-plans", "cost_usd": 0.81, "context_pct": 64 },
+      { "phase": "Task 1 scaffold (subagent)", "cost_usd": 0.90, "context_pct": 68 },
+      { "phase": "Tasks 2–8 implementation (subagents)", "cost_usd": 1.88, "context_pct": 91 }
+    ],
+    "code_produced": {
+      "lines_added": 2008,
+      "lines_removed": 170,
+      "files": [
+        "client/src/main.jsx",
+        "client/src/App.jsx",
+        "client/src/styles/info.css",
+        "client/src/pages/Info.jsx",
+        "audit/sessions.json",
+        "docs/superpowers/specs/2026-05-11-info-page-design.md",
+        "docs/superpowers/plans/2026-05-11-info-page.md"
+      ]
+    },
+    "research_findings": {
+      "biggest_cost_driver": "cache_read (6.3M tokens) — subagents re-reading context on each dispatch",
+      "writing_plans_share": "~20% of session cost — most expensive single skill",
+      "subagent_share": "95% of session attributed to subagent-heavy usage",
+      "context_growth_rate": "~4-6% per subagent dispatch",
+      "collapse_strategy": "collapsing Tasks 3–8 into one subagent saved ~5 dispatches and ~15-20% context"
+    }
   }
 ]
