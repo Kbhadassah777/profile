@@ -578,8 +578,9 @@ body {
 
 /* ── Pen & Paper ──────────────────────────── */
 .paper-card {
-  background: var(--paper);
-  border: 1px solid var(--ink);
+  background: var(--paper) padding-box,
+              linear-gradient(135deg, var(--blue), var(--pink)) border-box;
+  border: 2px solid transparent;
   border-radius: 4px;
   padding: 40px;
   margin-top: 40px;
