@@ -634,6 +634,7 @@ body {
 @media (max-width: 768px) {
   .section { padding: 60px 20px; }
   .headline { font-size: 48px; }
+  .eyebrow { padding: 4px 10px; }
   .card-grid, .fact-cards, .startup-cards { grid-template-columns: 1fr; }
   .startup-card:nth-child(1),
   .startup-card:nth-child(2),
