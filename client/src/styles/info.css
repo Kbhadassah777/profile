@@ -250,6 +250,10 @@ body {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.35; transform: scale(0.65); }
 }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
 
 /* ── Avatar ───────────────────────────────── */
 .avatar {
@@ -266,6 +270,7 @@ body {
   font-weight: 600;
   color: var(--ink);
   margin-bottom: 32px;
+  animation: float 3.4s ease-in-out infinite;
 }
 
 /* ── Pills ────────────────────────────────── */
