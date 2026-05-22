@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/info.css'
 
@@ -18,15 +18,140 @@ function useScrollReveal() {
   return [ref, revealed]
 }
 
-export default function Info() {
+// ── Scroll progress ───────────────────────────────────────────────────────────
+
+function ScrollProgress() {
+  const [pct, setPct] = useState(0)
+  useEffect(() => {
+    const onScroll = () => {
+      const el = document.documentElement
+      setPct((el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+  return <div className="scroll-progress" style={{ width: `${pct}%` }} />
+}
+
+// ── Blobs ─────────────────────────────────────────────────────────────────────
+
+function Blobs({ count = 8, seed = 0 }) {
+  const blobs = useMemo(() => {
+    // LCG deterministic RNG — same seed always produces the same layout
+    let state = seed * 9301 + 49297
+    const next = () => { state = (state * 9301 + 49297) % 233280; return state / 233280 }
+
+    const placed = []
+    const results = []
+
+    for (let i = 0; i < count; i++) {
+      const size    = 160 + next() * 200   // 160–360 px
+      const opacity = 0.52 + next() * 0.28
+      const blue    = i % 2 === 0
+      const r       = size / 2
+
+      // Attempt up to 50 positions; keep first that doesn't overlap any placed blob
+      let x = 5 + next() * 90
+      let y = 5 + next() * 90
+      for (let t = 0; t < 50; t++) {
+        const cx = 5 + next() * 90
+        const cy = 5 + next() * 90
+        const overlaps = placed.some(p => {
+          const dx = (cx - p.x) / 100 * 1200
+          const dy = (cy - p.y) / 100 * 700
+          return Math.sqrt(dx * dx + dy * dy) < (r + p.r) * 1.2
+        })
+        if (!overlaps) { x = cx; y = cy; break }
+      }
+
+      placed.push({ x, y, r })
+      results.push({ x, y, size, blue, opacity })
+    }
+
+    return results
+  }, [count, seed])
+
   return (
-    <main>
-      <HeroSection />
-      <WhoIAmSection />
-      <ProjectsSection />
-      <StartupsSection />
-      <PenAndPaperSection />
-    </main>
+    <div className="blobs" aria-hidden="true">
+      {blobs.map((b, i) => (
+        <div
+          key={i}
+          className="blob"
+          style={{
+            left:       `${b.x}%`,
+            top:        `${b.y}%`,
+            width:      b.size,
+            height:     b.size,
+            background: b.blue
+              ? `rgba(190,227,245,${b.opacity.toFixed(2)})`
+              : `rgba(252,195,195,${b.opacity.toFixed(2)})`,
+          }}
+        />
+      ))}
+    </div>
+  )
+}
+
+// ── Ticker ───────────────────────────────────────────────────────────────────
+
+const TICKER_ITEMS = [
+  'builder', '·', 'researcher', '·', 'multi-agent systems', '·',
+  'context windows', '·', 'GPT-2 from scratch', '·', 'ships at 3am', '·',
+  'ML papers', '·', "let's cook", '·',
+]
+
+function Ticker() {
+  const doubled = [...TICKER_ITEMS, ...TICKER_ITEMS]
+  return (
+    <div className="ticker" aria-hidden="true">
+      <span className="ticker__inner">
+        {doubled.map((item, i) => (
+          <span className="ticker__item" key={i}>{item}</span>
+        ))}
+      </span>
+    </div>
+  )
+}
+
+// ── Nav ──────────────────────────────────────────────────────────────────────
+
+function Nav() {
+  return (
+    <nav className="nav">
+      <div className="nav__inner">
+        <a href="#" className="nav__logo">BH</a>
+        <ul className="nav__links">
+          <li><a href="#projects" className="nav__link">projects</a></li>
+          <li><a href="#startups" className="nav__link">startups</a></li>
+          <li><a href="#writing" className="nav__link">writing</a></li>
+        </ul>
+      </div>
+    </nav>
+  )
+}
+
+export default function Info() {
+  useEffect(() => {
+    const onScroll = () => {
+      document.documentElement.style.setProperty('--scroll-y', window.scrollY)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  return (
+    <>
+      <ScrollProgress />
+      <Ticker />
+      <Nav />
+      <main>
+        <HeroSection />
+        <WhoIAmSection />
+        <ProjectsSection />
+        <StartupsSection />
+        <PenAndPaperSection />
+      </main>
+    </>
   )
 }
 
@@ -36,15 +161,20 @@ function HeroSection() {
   const [ref, revealed] = useScrollReveal()
   return (
     <section className="section section--white">
+      <Blobs count={8} seed={1} />
       <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
-        <span className="pill pill--blue">yes, I am a real person</span>
+        <div className="kicker">
+          <span className="kicker__dot" />
+          yes, I am a real person
+        </div>
         <div className="avatar">BH</div>
-        <h1 className="headline">Hi, I'm Blessy.</h1>
+        <h1 className="headline">Hi, I'm<br /><span className="headline-gradient">Blessy.</span></h1>
         <p className="subtext">
           I build things. I break things. I google why things broke.
           Occasionally in that order.
         </p>
       </div>
+      <span className="section__watermark" aria-hidden="true">BLESSY</span>
     </section>
   )
 }
@@ -93,13 +223,15 @@ function WhoIAmSection() {
 
   return (
     <section className="section section--gray">
+      <Blobs count={8} seed={2} />
       <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
-        <p className="label">a few things about me</p>
+        <span className="eyebrow">a few things about me</span>
+        <h2 className="headline">who <span className="headline-gradient">I am.</span></h2>
 
         <div className="fact-cards">
           {FACTS.map((f, i) => (
-            <div className="card" key={i}>
-              <p style={{ fontSize: 16, fontWeight: 300, marginBottom: 8 }}>{f.fact}</p>
+            <div className="card" key={i} style={{ '--i': i }}>
+              <p style={{ fontSize: 16, fontWeight: 400, marginBottom: 8 }}>{f.fact}</p>
               <p style={{ fontSize: 13, color: 'var(--muted)' }}>{f.sarcasm}</p>
             </div>
           ))}
@@ -124,6 +256,7 @@ function WhoIAmSection() {
           <p className="game__reaction">{reaction}</p>
         </div>
       </div>
+      <span className="section__watermark" aria-hidden="true">FACTS</span>
     </section>
   )
 }
@@ -173,15 +306,16 @@ function ProjectsSection() {
   }
 
   return (
-    <section className="section section--white">
+    <section className="section section--white" id="projects">
+      <Blobs count={8} seed={3} />
       <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
-        <p className="label">things I built</p>
+        <span className="eyebrow">things I built</span>
 
         <div className="card-grid">
-          {PROJECTS.map(p => (
-            <div className="card card--hover" key={p.id}>
+          {PROJECTS.map((p, i) => (
+            <div className="card card--hover" key={p.id} style={{ '--i': i }}>
               <span className="badge">{p.badge}</span>
-              <h3 style={{ fontSize: 18, fontWeight: 300, marginBottom: 8, paddingRight: 80 }}>{p.title}</h3>
+              <h3 style={{ fontSize: 18, fontWeight: 400, marginBottom: 8, paddingRight: 80 }}>{p.title}</h3>
               <p style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.6 }}>{p.desc}</p>
               <div className="tech-tags">
                 {p.tech.map(t => <span className="tech-tag" key={t}>{t}</span>)}
@@ -206,6 +340,7 @@ function ProjectsSection() {
           <p className="game__reaction">{reaction}</p>
         </div>
       </div>
+      <span className="section__watermark" aria-hidden="true">BUILT</span>
     </section>
   )
 }
@@ -301,11 +436,12 @@ function StartupsSection() {
   }
 
   return (
-    <section className="section section--gray">
+    <section className="section section--gray" id="startups">
+      <Blobs count={8} seed={4} />
       <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
 
-        <p className="label">ideas that were definitely going to change the world. briefly.</p>
-        <h2 className="headline" style={{ fontSize: 52 }}>
+        <span className="eyebrow">ideas that were definitely going to change the world. briefly.</span>
+        <h2 className="headline">
           almost
           <sup style={{ color: 'var(--purple)', fontSize: 16, display: 'inline-block', transform: 'rotate(12deg)', marginLeft: 2 }}>^</sup>
           {' '}startups
@@ -314,7 +450,7 @@ function StartupsSection() {
         <div className="startup-cards">
           {STARTUPS.map((s, i) => (
             <div className="card startup-card" key={i}>
-              <h3 style={{ fontSize: 17, fontWeight: 300, marginBottom: 6 }}>{s.name}</h3>
+              <h3 style={{ fontSize: 17, fontWeight: 400, marginBottom: 6 }}>{s.name}</h3>
               <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.6 }}>{s.tagline}</p>
               <div className="startup-card__reason">
                 <span className="startup-card__reason-tag">why it didn't happen</span>
@@ -334,8 +470,8 @@ function StartupsSection() {
         </div>
 
         <div className="divider" />
-        <p className="label">got an idea?</p>
-        <h2 className="headline" style={{ fontSize: 52 }}>lmk.</h2>
+        <span className="eyebrow">got an idea?</span>
+        <h2 className="headline">lmk.</h2>
         <p className="subtext">
           always looking for the next thing to build.
           drop an idea here — if something clicks, we can cook something together.
@@ -351,21 +487,21 @@ function StartupsSection() {
         >
           <circle cx="60" cy="22" r="16" fill="var(--pink)" />
           <g className="face-neutral">
-            <circle cx="54" cy="19" r="2" fill="var(--text)" />
-            <circle cx="66" cy="19" r="2" fill="var(--text)" />
-            <line x1="54" y1="27" x2="66" y2="27" stroke="var(--text)" strokeWidth="1.5" strokeLinecap="round" />
+            <circle cx="54" cy="19" r="2" fill="var(--ink)" />
+            <circle cx="66" cy="19" r="2" fill="var(--ink)" />
+            <line x1="54" y1="27" x2="66" y2="27" stroke="var(--ink)" strokeWidth="1.5" strokeLinecap="round" />
           </g>
           <g className="face-excited">
-            <circle cx="54" cy="19" r="2" fill="var(--text)" />
-            <circle cx="66" cy="19" r="2" fill="var(--text)" />
-            <path d="M54 25 Q60 31 66 25" stroke="var(--text)" fill="none" strokeWidth="1.5" strokeLinecap="round" />
+            <circle cx="54" cy="19" r="2" fill="var(--ink)" />
+            <circle cx="66" cy="19" r="2" fill="var(--ink)" />
+            <path d="M54 25 Q60 31 66 25" stroke="var(--ink)" fill="none" strokeWidth="1.5" strokeLinecap="round" />
           </g>
-          <line x1="60" y1="38" x2="60" y2="74" stroke="var(--text)" strokeWidth="2" strokeLinecap="round" />
-          <line x1="60" y1="50" x2="38" y2="64" stroke="var(--text)" strokeWidth="2" strokeLinecap="round" />
-          <line x1="60" y1="50" x2="82" y2="60" stroke="var(--text)" strokeWidth="2" strokeLinecap="round" />
-          <line x1="60" y1="74" x2="46" y2="100" stroke="var(--text)" strokeWidth="2" strokeLinecap="round" />
-          <line x1="60" y1="74" x2="74" y2="100" stroke="var(--text)" strokeWidth="2" strokeLinecap="round" />
-          <rect x="22" y="62" width="18" height="14" rx="3" fill="var(--pink)" stroke="var(--text)" strokeWidth="1" />
+          <line x1="60" y1="38" x2="60" y2="74" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
+          <line x1="60" y1="50" x2="38" y2="64" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
+          <line x1="60" y1="50" x2="82" y2="60" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
+          <line x1="60" y1="74" x2="46" y2="100" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
+          <line x1="60" y1="74" x2="74" y2="100" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
+          <rect x="22" y="62" width="18" height="14" rx="3" fill="var(--pink)" stroke="var(--ink)" strokeWidth="1" />
           <rect x="5" y="108" width="110" height="6" rx="2" fill="var(--blue)" opacity="0.25" />
         </svg>
 
@@ -394,6 +530,7 @@ function StartupsSection() {
         )}
 
       </div>
+      <span className="section__watermark" aria-hidden="true">IDEAS</span>
     </section>
   )
 }
@@ -476,10 +613,11 @@ function PenAndPaperSection() {
   })
 
   return (
-    <section className="section section--white">
+    <section className="section section--white" id="writing">
+      <Blobs count={8} seed={5} />
       <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
-        <p className="label">pen & paper</p>
-        <h2 className="headline">things I wrote.</h2>
+        <span className="eyebrow">pen & paper</span>
+        <h2 className="headline">things I <span className="headline-gradient">wrote.</span></h2>
         <p className="subtext">
           blogs, pre-prints, half-baked thoughts. occasionally coherent.
         </p>
@@ -499,7 +637,14 @@ function PenAndPaperSection() {
 
           <div className="writing-list">
             {filtered.map(w => (
-              <div className="writing-row" key={w.id} onClick={() => toggleExpand(w.id)} role="button" tabIndex={0} onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && toggleExpand(w.id)}>
+              <div
+                className="writing-row"
+                key={w.id}
+                onClick={() => toggleExpand(w.id)}
+                role="button"
+                tabIndex={0}
+                onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && toggleExpand(w.id)}
+              >
                 <div className="writing-row__header">
                   <span className={`type-pill ${w.type === 'blog' ? 'type-pill--blog' : 'type-pill--preprint'}`}>
                     {w.type === 'blog' ? 'blog' : 'pre-print'}
@@ -532,6 +677,7 @@ function PenAndPaperSection() {
           <Link to="/pen-and-paper" className="see-all">see all writing →</Link>
         </div>
       </div>
+      <span className="section__watermark" aria-hidden="true">WROTE</span>
     </section>
   )
 }
