@@ -45,7 +45,7 @@ function Blobs({ count = 8, seed = 0 }) {
     const results = []
 
     for (let i = 0; i < count; i++) {
-      const size    = 160 + next() * 200   // 160–360 px
+      const size    = 80 + next() * 120    // 80–200 px
       const opacity = 0.52 + next() * 0.28
       const blue    = i % 2 === 0
       const r       = size / 2
