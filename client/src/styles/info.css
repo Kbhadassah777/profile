@@ -445,6 +445,70 @@ body {
 
 /* ── Let's Cook ───────────────────────────── */
 .divider { height: 1px; background: var(--ink); opacity: 0.12; margin: 64px 0 48px; }
+.lmk-block {
+  margin-top: 48px;
+  padding: 48px;
+  background: var(--ink);
+  border-radius: 8px;
+  color: var(--bg);
+}
+.lmk-block .eyebrow {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(245, 243, 238, 0.55);
+}
+.lmk-block .eyebrow::before {
+  background: var(--pink);
+}
+.lmk-block .headline {
+  color: var(--bg);
+}
+.lmk-block .subtext {
+  color: rgba(245, 243, 238, 0.65);
+}
+.lmk-block > p {
+  font-size: 13px;
+  margin-top: 12px;
+  color: rgba(245, 243, 238, 0.45);
+}
+.lmk-block .cartoon {
+  filter: brightness(0) invert(1);
+  opacity: 0.75;
+}
+.lmk-block .idea-input {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--bg);
+}
+.lmk-block .idea-input::placeholder {
+  color: rgba(245, 243, 238, 0.3);
+}
+.lmk-block .idea-input:focus {
+  border-color: var(--pink);
+  box-shadow: 2px 2px 0 var(--pink);
+}
+.lmk-block .idea-add-btn {
+  background: var(--pink);
+  border-color: var(--pink);
+  color: var(--ink);
+}
+.lmk-block .idea-add-btn:hover {
+  box-shadow: 3px 3px 0 rgba(252, 195, 195, 0.45);
+}
+.lmk-block .idea-comment {
+  color: rgba(245, 243, 238, 0.45);
+}
+.lmk-block .idea-item {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: var(--bg);
+}
+.lmk-block .idea-remove {
+  color: rgba(245, 243, 238, 0.35);
+}
+.lmk-block .idea-remove:hover {
+  color: var(--bg);
+}
 
 .cartoon { display: block; margin: 40px auto; }
 .face-excited { display: none; }

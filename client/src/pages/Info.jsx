@@ -470,13 +470,14 @@ function StartupsSection() {
         </div>
 
         <div className="divider" />
+        <div className="lmk-block">
         <span className="eyebrow">got an idea?</span>
-        <h2 className="headline">lmk.</h2>
+        <h2 className="headline"><span className="headline-gradient">lmk.</span></h2>
         <p className="subtext">
           always looking for the next thing to build.
           drop an idea here — if something clicks, we can cook something together.
         </p>
-        <p style={{ fontSize: 13, color: 'var(--muted)', marginTop: 12 }}>
+        <p>
           Blessy will find these here. no promises. but also... maybe promises.
         </p>
 
@@ -529,6 +530,7 @@ function StartupsSection() {
           </ul>
         )}
 
+        </div>{/* end lmk-block */}
       </div>
       <span className="section__watermark" aria-hidden="true">IDEAS</span>
     </section>
