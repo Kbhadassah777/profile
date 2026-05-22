@@ -299,10 +299,11 @@ body {
   padding: 28px;
   position: relative;
 }
-.card--hover { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.card--hover { transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease; }
 .card--hover:hover {
   transform: translate(-2px, -2px);
   box-shadow: 4px 4px 0 var(--ink);
+  background: linear-gradient(135deg, rgba(190, 227, 245, 0.08), rgba(252, 195, 195, 0.12));
 }
 
 .badge {
