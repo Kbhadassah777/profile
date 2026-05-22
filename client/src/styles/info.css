@@ -179,14 +179,29 @@ body {
 
 /* ── Typography ───────────────────────────── */
 .eyebrow {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--mono);
   font-size: 11px;
   font-weight: 400;
   color: var(--muted);
-  letter-spacing: 0.22em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   margin-bottom: 20px;
+  padding: 5px 14px;
+  background: rgba(190, 227, 245, 0.12);
+  border: 1px solid rgba(190, 227, 245, 0.5);
+  border-radius: 999px;
+}
+.eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  flex-shrink: 0;
+  animation: livepulse 2.2s ease-in-out infinite;
 }
 .headline {
   font-family: var(--display);
