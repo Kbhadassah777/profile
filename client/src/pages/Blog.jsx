@@ -3,11 +3,6 @@ import { useParams, Link } from 'react-router-dom'
 import { WRITINGS } from '../data/writings.js'
 import '../styles/blog.css'
 
-function slugify(url) {
-  if (!url) return ''
-  return url.split('?')[0].split('/').pop()
-}
-
 function formatDate(str) {
   if (!str) return ''
   return new Date(str).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
@@ -46,7 +41,7 @@ function PostList() {
         {published.length > 0 && (
           <div className="blog-grid">
             {published.map(w => (
-              <Link key={w.id} to={`/blog/${slugify(w.url)}`} className="blog-card">
+              <Link key={w.id} to={`/blog/${w.id}`} className="blog-card">
                 {w.thumbnail && (
                   <div className="blog-card__thumb-wrap">
                     <img src={w.thumbnail} alt="" className="blog-card__thumb" />
@@ -85,28 +80,23 @@ function PostList() {
 /* ── Post view ────────────────────────────────────────────────────────────── */
 
 function PostView({ slug }) {
-  const meta = WRITINGS.find(w => slugify(w.url) === slug)
+  const meta = WRITINGS.find(w => w.id === slug)
   const [post, setPost]       = useState(null)
   const [loading, setLoading] = useState(true)
-  const [fetchFailed, setFetchFailed] = useState(false)
 
   useEffect(() => {
-    if (!meta?.feedUrl) { setLoading(false); return }
+    if (!meta?.feedUrl || !meta?.url) { setLoading(false); return }
 
     const api = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(meta.feedUrl)}&count=50`
     fetch(api)
       .then(r => r.json())
       .then(data => {
-        const item = data.items?.find(i => {
-          const itemSlug = slugify(i.link)
-          return itemSlug === slug || i.link?.includes(slug) || i.guid?.includes(slug)
-        })
+        const item = data.items?.find(i => i.link === meta.url || i.guid === meta.url)
         if (item) setPost(item)
-        else setFetchFailed(true)
         setLoading(false)
       })
-      .catch(() => { setFetchFailed(true); setLoading(false) })
-  }, [slug, meta?.feedUrl])
+      .catch(() => setLoading(false))
+  }, [slug, meta?.feedUrl, meta?.url])
 
   return (
     <div className="blog-page">

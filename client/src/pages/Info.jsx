@@ -794,8 +794,7 @@ function PenAndPaperSection() {
 
           <div className="writing-list">
             {filtered.map(w => {
-              const slug = w.url?.split('/').pop()
-              const isPublished = w.status === 'published' && slug
+              const isPublished = w.status === 'published'
               return (
                 <div
                   key={w.id}
@@ -807,7 +806,7 @@ function PenAndPaperSection() {
                 >
                   {isPublished
                     ? (
-                      <Link to={`/blog/${slug}`} className="writing-row__link-wrap">
+                      <Link to={`/blog/${w.id}`} className="writing-row__link-wrap">
                         <div className="writing-row__header">
                           <span className="type-pill type-pill--blog">blog</span>
                           <div className="writing-row__main">
