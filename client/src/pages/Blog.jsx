@@ -17,9 +17,9 @@ function BlogNav() {
   return (
     <nav className="nav">
       <div className="nav__inner">
-        <Link to="/info" className="nav__logo">BH</Link>
+        <Link to="/" className="nav__logo">BH</Link>
         <ul className="nav__links">
-          <li><Link to="/info" className="nav__link">home</Link></li>
+          <li><Link to="/" className="nav__link">home</Link></li>
           <li><Link to="/blog" className="nav__link">writing</Link></li>
         </ul>
       </div>
