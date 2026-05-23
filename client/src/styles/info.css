@@ -874,14 +874,61 @@ body {
 
 /* ── Mobile ───────────────────────────────── */
 @media (max-width: 768px) {
-  .section { padding: 60px 20px; }
-  .headline { font-size: 48px; }
-  .eyebrow { padding: 4px 10px; }
-  .card-grid, .fact-cards, .startup-cards { grid-template-columns: 1fr; }
+  /* Layout */
+  .section { padding: 60px 20px; min-height: unset; }
+  .nav__links { display: none; }
+  .nav { padding: 0 16px; }
+
+  /* Typography */
+  .headline { font-size: 52px; letter-spacing: -1px; }
+  .subtext  { font-size: 16px; }
+  .eyebrow  { padding: 4px 10px; font-size: 10px; }
+
+  /* Grids → single column */
+  .card-grid,
+  .fact-cards,
+  .startup-cards { grid-template-columns: 1fr; }
+
+  /* Remove startup card tilts */
   .startup-card:nth-child(1),
   .startup-card:nth-child(2),
   .startup-card:nth-child(3) { transform: none; }
-  .writing-row__subtitle, .writing-expand { padding-left: 0; }
+
+  /* Writing rows */
+  .writing-row__subtitle,
+  .writing-expand { padding-left: 0; }
+  .writing-row__header { flex-wrap: wrap; gap: 8px; }
+  .writing-row__title  { font-size: 15px; }
+
+  /* lmk block */
+  .lmk-block { padding: 28px 20px; margin-top: 32px; }
+
+  /* Idea input: stack vertically */
+  .idea-input-row { flex-direction: column; }
+  .idea-add-btn   { width: 100%; text-align: center; padding: 14px; }
+
+  /* Paper card */
+  .paper-card { padding: 24px 20px; }
+
+  /* Pitch game */
   .game { padding: 20px; }
-  .nav__links { display: none; }
+  .game__question { font-size: 17px; }
+  .game__buttons  { flex-direction: column; align-items: stretch; }
+  .game__btn      { width: 100%; text-align: center; }
+
+  /* Footer */
+  .footer { padding: 36px 16px 24px; }
+  .footer__meta { flex-direction: column; align-items: flex-start; gap: 4px; }
+
+  /* Runner game */
+  .game-strip { height: 110px; }
+  .game-strip__msg { font-size: 10px; letter-spacing: 0.12em; }
+}
+
+/* ── Small phones ─────────────────────────── */
+@media (max-width: 390px) {
+  .headline { font-size: 40px; letter-spacing: -0.5px; }
+  .section  { padding: 48px 16px; }
+  .card     { padding: 20px 16px; }
+  .lmk-block { padding: 22px 16px; }
 }
