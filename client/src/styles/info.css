@@ -213,7 +213,7 @@ body {
   margin-bottom: 24px;
 }
 .headline-gradient {
-  background: linear-gradient(135deg, var(--blue), var(--pink));
+  background: linear-gradient(135deg, #1a90c8, #cc5075);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -699,6 +699,177 @@ body {
 .see-all:hover {
   transform: translate(-1px, -1px);
   box-shadow: 2px 2px 0 var(--blue);
+}
+
+/* ── Footer / Runner Game ─────────────────── */
+.footer {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 48px 24px 32px;
+}
+.footer__inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.footer__top { margin-bottom: 20px; }
+.footer .eyebrow {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.18);
+  color: rgba(245,243,238,0.55);
+}
+.footer .eyebrow::before { background: var(--pink); }
+.footer__score-row {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin-top: 10px;
+}
+.footer__score {
+  font-family: var(--mono);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: rgba(245,243,238,0.7);
+}
+.footer__hi {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: rgba(245,243,238,0.32);
+}
+
+.game-strip {
+  position: relative;
+  height: 130px;
+  background: var(--blue);
+  border: 1px solid rgba(190,227,245,0.4);
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  margin-bottom: 32px;
+  outline: none;
+}
+.game-strip:focus-visible { box-shadow: 0 0 0 2px rgba(26,144,200,0.5); }
+.game-strip__ground {
+  position: absolute;
+  bottom: 20px;
+  left: 0; right: 0;
+  height: 1px;
+  background: rgba(29,29,31,0.18);
+}
+.game-strip__msg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: rgba(29,29,31,0.55);
+  text-transform: uppercase;
+  text-align: center;
+  padding: 0 20px;
+  pointer-events: none;
+}
+
+.cloud {
+  position: absolute;
+  background: white;
+  border-radius: 50px;
+  pointer-events: none;
+  opacity: 0.82;
+}
+.cloud::before,
+.cloud::after {
+  content: '';
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+}
+.cloud::before {
+  width: 55%;
+  height: 180%;
+  top: -55%;
+  left: 18%;
+}
+.cloud::after {
+  width: 38%;
+  height: 140%;
+  top: -38%;
+  right: 16%;
+}
+@keyframes cloud-drift {
+  from { transform: translateX(820px); }
+  to   { transform: translateX(-160px); }
+}
+.cloud--1 { width: 72px; height: 20px; top: 10px; animation: cloud-drift 18s linear infinite; }
+.cloud--2 { width: 48px; height: 14px; top: 22px; animation: cloud-drift 26s linear infinite; animation-delay: -10s; }
+.cloud--3 { width: 60px; height: 17px; top: 8px;  animation: cloud-drift 22s linear infinite; animation-delay: -5s; }
+
+.runner {
+  position: absolute;
+  bottom: 16px;
+  left: 82px;
+  width: 28px;
+  height: 46px;
+  pointer-events: none;
+}
+.runner--jump { animation: runner-jump 0.54s cubic-bezier(0.33,1,0.68,1); }
+@keyframes runner-jump {
+  0%   { transform: translateY(0); }
+  38%  { transform: translateY(-44px); }
+  62%  { transform: translateY(-44px); }
+  100% { transform: translateY(0); }
+}
+.runner--dead { transform: rotate(14deg) translateY(5px); }
+
+.obstacle {
+  position: absolute;
+  bottom: 21px;
+  width: 14px;
+  height: 28px;
+  background: var(--pink);
+  opacity: 0.85;
+  border-radius: 2px 2px 0 0;
+  pointer-events: none;
+}
+.obstacle::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 2px;
+  width: 9px;
+  height: 11px;
+  background: var(--pink);
+  border-radius: 2px;
+}
+.obstacle::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  right: -7px;
+  width: 8px;
+  height: 16px;
+  background: var(--pink);
+  opacity: 0.8;
+  border-radius: 2px;
+}
+
+.footer__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: rgba(245,243,238,0.22);
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.07);
 }
 
 /* ── Mobile ───────────────────────────────── */
