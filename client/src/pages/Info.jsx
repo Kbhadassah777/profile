@@ -233,7 +233,7 @@ function WhoIAmSection() {
       <Blobs count={8} seed={2} />
       <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
         <span className="eyebrow">a few things about me</span>
-        <h2 className="headline">who <span className="headline-gradient">I am.</span></h2>
+        <h2 className="headline">who am <span className="headline-gradient">I?</span></h2>
 
         <div className="fact-cards">
           {FACTS.map((f, i) => (
