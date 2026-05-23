@@ -95,9 +95,9 @@ function Blobs({ count = 8, seed = 0 }) {
 // ── Ticker ───────────────────────────────────────────────────────────────────
 
 const TICKER_ITEMS = [
-  'builder', '·', 'researcher', '·', 'multi-agent systems', '·',
-  'context windows', '·', 'GPT-2 from scratch', '·', 'ships at 3am', '·',
-  'ML papers', '·', "let's cook", '·',
+  'Builder', '·', 'Researcher', '·', 'Multi-agent systems', '·',
+  'Context windows', '·', 'GPT-2 from scratch', '·', 'Ships at 3am', '·',
+  'ML papers', '·', "Let's cook", '·',
 ]
 
 function Ticker() {
@@ -115,15 +115,20 @@ function Ticker() {
 
 // ── Nav ──────────────────────────────────────────────────────────────────────
 
+function scrollTo(id) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+}
+
 function Nav() {
   return (
     <nav className="nav">
       <div className="nav__inner">
-        <a href="#" className="nav__logo">BH</a>
+        <button className="nav__logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>BH</button>
         <ul className="nav__links">
-          <li><a href="#projects" className="nav__link">projects</a></li>
-          <li><a href="#startups" className="nav__link">startups</a></li>
-          <li><a href="#writing" className="nav__link">writing</a></li>
+          <li><button className="nav__link" onClick={() => scrollTo('projects')}>projects</button></li>
+          <li><button className="nav__link" onClick={() => scrollTo('resume')}>resume</button></li>
+          <li><button className="nav__link" onClick={() => scrollTo('writing')}>writing</button></li>
+          <li><button className="nav__link" onClick={() => scrollTo('startups')}>ideas</button></li>
         </ul>
       </div>
     </nav>
@@ -148,8 +153,9 @@ export default function Info() {
         <HeroSection />
         <WhoIAmSection />
         <ProjectsSection />
-        <StartupsSection />
+        <ResumeSection />
         <PenAndPaperSection />
+        <StartupsSection />
       </main>
       <FooterGame />
     </>
@@ -171,8 +177,8 @@ function HeroSection() {
         <div className="avatar">BH</div>
         <h1 className="headline">Hi, I'm<br /><span className="headline-gradient">Blessy.</span></h1>
         <p className="subtext">
-          I build things. I break things. I google why things broke.
-          Occasionally in that order.
+          I build things. I break things. I google why things broke. I fix it
+          in a forever loop. Occasionally in that order.
         </p>
       </div>
       <span className="section__watermark" aria-hidden="true">BLESSY</span>
@@ -267,26 +273,42 @@ function WhoIAmSection() {
 const PROJECTS = [
   {
     id: 'gpt2',
-    title: 'GPT-2 from scratch',
-    desc: 'read the paper. built the thing. understood 60% of it.',
-    tech: ['Python', 'PyTorch'],
+    title: 'GPT-2 from Scratch',
+    desc: 'studied the OpenAI paper + Karpathy\'s nanoGPT. built tokenisation, positional embeddings, attention heads from scratch. trained on sample corpora for text generation.',
+    tech: ['Python', 'PyTorch', 'Transformers'],
     badge: 'nobody asked',
+    longest: false,
+  },
+  {
+    id: 'sde-agent',
+    title: 'Senior SDE Agent',
+    desc: 'multi-agent master-slave architecture with Claude Opus 4.5. token optimisation, task delivery, feedback loops, and hallucination mitigation via context health checks.',
+    tech: ['Claude Opus 4.5', 'Multi-Agent', 'Node.js'],
+    badge: 'in progress',
+    longest: true,
+  },
+  {
+    id: 'chatbot',
+    title: 'Healthcare Chatbot',
+    desc: 'scraped top 100 google results, fine-tuned a HuggingFace model, hosted on AWS SageMaker with a REST API. accuracy: 0.83.',
+    tech: ['Python', 'SentenceBert', 'Selenium', 'AWS'],
+    badge: '0.83 acc',
+    longest: false,
+  },
+  {
+    id: 'malicious-login',
+    title: 'Malicious Login Detector',
+    desc: 'validates login attempts in real time. trained on KDD dataset, served via AWS SageMaker REST API. accuracy: 0.96.',
+    tech: ['Python', 'sklearn', 'AWS SageMaker'],
+    badge: '0.96 acc',
     longest: false,
   },
   {
     id: 'saas',
     title: 'Multi-agent SaaS',
-    desc: 'agents talking to agents. what could go wrong.',
+    desc: 'agents talking to agents. what could go wrong. building the infra to find out.',
     tech: ['Claude API', 'Node.js', 'React'],
-    badge: 'built at 2am',
-    longest: false,
-  },
-  {
-    id: 'research',
-    title: 'Context window research',
-    desc: 'turns out more context = more chaos. documenting it.',
-    tech: ['Python', 'Analysis'],
-    badge: "jury's still out",
+    badge: 'in progress',
     longest: true,
   },
 ]
@@ -367,11 +389,6 @@ const STARTUPS = [
 ]
 
 const PITCHES = [
-  {
-    pitch: 'Airbnb for coworking spaces. B2B. Series A ready.',
-    fund: 'bold. probably wrong.',
-    pass: 'wise, honestly.',
-  },
   {
     pitch: "AI that tells you when you're being boring in meetings.",
     fund: 'disruptive. possibly illegal.',
@@ -472,46 +489,88 @@ function StartupsSection() {
 
         <div className="divider" />
         <div className="lmk-block">
-        <span className="eyebrow">got an idea?</span>
-        <h2 className="headline"><span className="headline-gradient">lmk.</span></h2>
+        <span className="eyebrow">currently out grocery shopping (for ideas)</span>
+        <h2 className="headline">do you want me to<br /><span className="headline-gradient">add something?</span></h2>
         <p className="subtext">
-          always looking for the next thing to build.
-          drop an idea here — if something clicks, we can cook something together.
+          drop it on the list. i'll find it when i'm back.
         </p>
         <p>
-          Blessy will find these here. no promises. but also... maybe promises.
+          i'll get it for the both of us and we can cook it together!
         </p>
 
         <svg
           className={`cartoon ${excited ? 'excited' : ''}`}
-          width="120" height="130"
-          viewBox="0 0 120 130"
+          width="160" height="130"
+          viewBox="0 0 160 130"
+          aria-hidden="true"
         >
-          <circle cx="60" cy="22" r="16" fill="var(--pink)" />
+          {/* ── person ── */}
+          {/* head */}
+          <circle cx="38" cy="22" r="14" fill="var(--pink)" stroke="var(--ink)" strokeWidth="1" />
           <g className="face-neutral">
-            <circle cx="54" cy="19" r="2" fill="var(--ink)" />
-            <circle cx="66" cy="19" r="2" fill="var(--ink)" />
-            <line x1="54" y1="27" x2="66" y2="27" stroke="var(--ink)" strokeWidth="1.5" strokeLinecap="round" />
+            <circle cx="33" cy="20" r="1.8" fill="var(--ink)" />
+            <circle cx="43" cy="20" r="1.8" fill="var(--ink)" />
+            <line x1="33" y1="27" x2="43" y2="27" stroke="var(--ink)" strokeWidth="1.5" strokeLinecap="round" />
           </g>
           <g className="face-excited">
-            <circle cx="54" cy="19" r="2" fill="var(--ink)" />
-            <circle cx="66" cy="19" r="2" fill="var(--ink)" />
-            <path d="M54 25 Q60 31 66 25" stroke="var(--ink)" fill="none" strokeWidth="1.5" strokeLinecap="round" />
+            <circle cx="33" cy="20" r="1.8" fill="var(--ink)" />
+            <circle cx="43" cy="20" r="1.8" fill="var(--ink)" />
+            <path d="M33 25 Q38 31 43 25" stroke="var(--ink)" fill="none" strokeWidth="1.5" strokeLinecap="round" />
           </g>
-          <line x1="60" y1="38" x2="60" y2="74" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
-          <line x1="60" y1="50" x2="38" y2="64" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
-          <line x1="60" y1="50" x2="82" y2="60" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
-          <line x1="60" y1="74" x2="46" y2="100" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
-          <line x1="60" y1="74" x2="74" y2="100" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
-          <rect x="22" y="62" width="18" height="14" rx="3" fill="var(--pink)" stroke="var(--ink)" strokeWidth="1" />
-          <rect x="5" y="108" width="110" height="6" rx="2" fill="var(--blue)" opacity="0.25" />
+          {/* body */}
+          <line x1="38" y1="36" x2="38" y2="72" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
+          {/* right arm — forward, gripping cart handle */}
+          <line x1="38" y1="48" x2="70" y2="58" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
+          {/* left arm — back swing */}
+          <line x1="38" y1="48" x2="20" y2="62" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
+          {/* walking legs */}
+          <g className="leg-left">
+            <line x1="38" y1="72" x2="26" y2="100" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
+          </g>
+          <g className="leg-right">
+            <line x1="38" y1="72" x2="50" y2="98" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
+          </g>
+
+          {/* ── shopping cart ── */}
+          {/* handle bar */}
+          <line x1="70" y1="58" x2="110" y2="58" stroke="var(--ink)" strokeWidth="2.5" strokeLinecap="round" />
+          {/* cart frame sides */}
+          <line x1="75" y1="58" x2="80" y2="90" stroke="var(--ink)" strokeWidth="1.8" strokeLinecap="round" />
+          <line x1="110" y1="58" x2="115" y2="90" stroke="var(--ink)" strokeWidth="1.8" strokeLinecap="round" />
+          {/* cart basket */}
+          <rect x="78" y="62" width="38" height="28" rx="3" fill="var(--blue)" stroke="var(--ink)" strokeWidth="1.5" opacity="0.85" />
+          {/* basket grid lines */}
+          <line x1="91" y1="62" x2="91" y2="90" stroke="var(--ink)" strokeWidth="0.7" opacity="0.4" />
+          <line x1="104" y1="62" x2="104" y2="90" stroke="var(--ink)" strokeWidth="0.7" opacity="0.4" />
+          <line x1="78" y1="73" x2="116" y2="73" stroke="var(--ink)" strokeWidth="0.7" opacity="0.4" />
+          {/* items poking out */}
+          <circle cx="88" cy="59" r="5" fill="var(--pink)" stroke="var(--ink)" strokeWidth="0.9" />
+          <circle cx="100" cy="57" r="4.5" fill="#8BC34A" stroke="var(--ink)" strokeWidth="0.9" />
+          <rect x="108" y="54" width="5" height="10" rx="1.5" fill="var(--pink)" opacity="0.9" />
+          {/* cart bottom bar */}
+          <line x1="78" y1="90" x2="116" y2="90" stroke="var(--ink)" strokeWidth="1.8" strokeLinecap="round" />
+          {/* axle */}
+          <line x1="82" y1="90" x2="112" y2="90" stroke="var(--ink)" strokeWidth="1" />
+          {/* wheels */}
+          <circle cx="84" cy="100" r="9" fill="var(--bg)" stroke="var(--ink)" strokeWidth="1.5" />
+          <circle cx="84" cy="100" r="4" fill="var(--ink)" opacity="0.12" />
+          <circle cx="110" cy="100" r="9" fill="var(--bg)" stroke="var(--ink)" strokeWidth="1.5" />
+          <circle cx="110" cy="100" r="4" fill="var(--ink)" opacity="0.12" />
+          {/* wheel spokes */}
+          <line x1="84" y1="91" x2="84" y2="109" stroke="var(--ink)" strokeWidth="0.8" opacity="0.3" />
+          <line x1="75" y1="100" x2="93" y2="100" stroke="var(--ink)" strokeWidth="0.8" opacity="0.3" />
+          <line x1="110" y1="91" x2="110" y2="109" stroke="var(--ink)" strokeWidth="0.8" opacity="0.3" />
+          <line x1="101" y1="100" x2="119" y2="100" stroke="var(--ink)" strokeWidth="0.8" opacity="0.3" />
+
+          {/* ground shadow */}
+          <ellipse cx="80" cy="116" rx="70" ry="4" fill="var(--blue)" opacity="0.15" />
         </svg>
 
         <div className="idea-input-row">
           <input
             className="idea-input"
             type="text"
-            placeholder="drop an idea..."
+            placeholder="add to the list..."
             value={ideaInput}
             onChange={e => setIdeaInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && addIdea()}
@@ -538,55 +597,150 @@ function StartupsSection() {
   )
 }
 
-// ── Section 5: Pen & Paper ───────────────────────────────────────────────────
+// ── Section 5: Resume ────────────────────────────────────────────────────────
 
-const WRITINGS = [
+const EXPERIENCE = [
   {
-    id: 'gpt2-blog',
-    type: 'blog',
-    title: 'Why I built GPT-2 from scratch',
-    subtitle: 'nobody asked. zero regrets.',
-    status: 'published',
-    url: '#',
-    desc: 'A walkthrough of implementing the full GPT-2 architecture from scratch — attention heads, positional encodings, and the bits papers gloss over.',
+    id: 'qualcomm',
+    org: 'Qualcomm',
+    role: 'Engineer',
+    period: 'Jun 2025 – present',
+    points: [
+      'Building a CI platform that orchestrates and executes jobs on requested resources using Jenkins pipelines.',
+      'Solely architected and maintains the Context Service & CLI (Node.js + MongoDB) for runtime context accessibility.',
+      'Built a Template Service (à la GitHub Actions) and enhanced job orchestration.',
+      'Designed a web crawler for automated AWS Parameter Store access.',
+    ],
   },
   {
-    id: 'context-blog',
-    type: 'blog',
-    title: 'Context windows and why they stress me out',
-    subtitle: 'more tokens ≠ more intelligence. groundbreaking.',
-    status: 'coming-soon',
-    url: null,
-    desc: 'An honest look at what happens to LLM coherence as you push context to its limits.',
+    id: 'stax',
+    org: 'Stax.AI',
+    role: 'Software Engineer',
+    period: '2024 – Jun 2025',
+    points: [
+      'Built a job orchestrator using PostgreSQL and RabbitMQ with retries, DLQs, and multi-cloud scaling.',
+      'Designed an OCR + GPT-3.5 pipeline with prompt chaining and fuzzy logic for large-scale document verification.',
+      'Developed a file sync interface (React + Node.js + AWS S3 / IAM) used by 70% of customers.',
+      'Migrated services to GCP Cloud Functions and Compute Engine.',
+    ],
   },
   {
-    id: 'multiagent-blog',
-    type: 'blog',
-    title: 'Multi-agent systems — a love/chaos story',
-    subtitle: 'what happens when you let AI talk to itself.',
-    status: 'coming-soon',
-    url: null,
-    desc: 'Building a multi-agent SaaS and discovering every failure mode the papers skip.',
-  },
-  {
-    id: 'framework-blog',
-    type: 'blog',
-    title: 'Why I question every framework I use',
-    subtitle: 'finite things deserve infinite scrutiny.',
-    status: 'coming-soon',
-    url: null,
-    desc: "Abstractions have tradeoffs. This is about knowing which ones you're signing up for.",
-  },
-  {
-    id: 'context-preprint',
-    type: 'preprint',
-    title: 'Context Window Complexity in Multi-Agent LLM Systems',
-    subtitle: 'turns out Big-O applies to vibes too.',
-    status: 'in-progress',
-    url: null,
-    desc: 'Formal analysis of how context window usage scales in multi-agent architectures and what that means for coherence.',
+    id: 'jio',
+    org: 'Reliance Jio',
+    role: 'Software Developer',
+    period: 'Aug 2020 – Nov 2021',
+    points: [
+      'Built indoor tracking device application with Java, MySQL, and Spring Boot.',
+      'Spring Boot microservice to monitor out-of-zone tags, improved location accuracy by 30%.',
+      'Optimised DB by indexing tables: 20% reduction in response time; simplified queries with Oracle views.',
+      'Streamlined CI/CD deployment in Azure DevOps across multiple teams.',
+    ],
   },
 ]
+
+const EDUCATION = [
+  {
+    id: 'asu',
+    org: 'Arizona State University',
+    degree: 'M.S. Computer Science',
+    period: 'Jan 2022 – Dec 2023',
+    gpa: '3.94 / 4.0',
+    detail: 'Distributed Database Systems · Software Security · HCI · Data Mining · Statistical ML · Planning & Learning in AI · Semantic Web Mining',
+  },
+  {
+    id: 'vit',
+    org: 'Vellore Institute of Technology',
+    degree: 'B.Tech Electronics & Comm. Engineering',
+    period: 'Jul 2016 – Jun 2020',
+    gpa: '3.26 / 4.0',
+    detail: 'Minor: IoT & Sensors · OOP · DSA · Cloud Computing · Neural Networks · AI with Python',
+  },
+]
+
+const CERTIFICATIONS = [
+  'AWS Cloud Practitioner',
+  'Azure Database Administrator Associate',
+  'Azure Data Fundamentals',
+]
+
+function ResumeSection() {
+  const [ref, revealed] = useScrollReveal()
+  const [openExp, setOpenExp] = useState(null)
+
+  return (
+    <section className="section section--gray" id="resume">
+      <Blobs count={6} seed={9} />
+      <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
+        <span className="eyebrow">résumé</span>
+        <h2 className="headline">the <span className="headline-gradient">full picture.</span></h2>
+
+        {/* Experience */}
+        <div className="resume-block">
+          <h3 className="resume-block__label">Experience</h3>
+          <div className="resume-timeline">
+            {EXPERIENCE.map(e => (
+              <div key={e.id} className="resume-item">
+                <div
+                  className="resume-item__header"
+                  onClick={() => setOpenExp(openExp === e.id ? null : e.id)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={ev => (ev.key === 'Enter' || ev.key === ' ') && setOpenExp(openExp === e.id ? null : e.id)}
+                >
+                  <div className="resume-item__left">
+                    <span className="resume-item__org">{e.org}</span>
+                    <span className="resume-item__role">{e.role}</span>
+                  </div>
+                  <div className="resume-item__right">
+                    <span className="resume-item__period">{e.period}</span>
+                    <span className="resume-item__toggle">{openExp === e.id ? '−' : '+'}</span>
+                  </div>
+                </div>
+                {openExp === e.id && (
+                  <ul className="resume-item__points">
+                    {e.points.map((pt, i) => <li key={i}>{pt}</li>)}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Education */}
+        <div className="resume-block">
+          <h3 className="resume-block__label">Education</h3>
+          <div className="resume-edu-grid">
+            {EDUCATION.map(ed => (
+              <div key={ed.id} className="resume-edu-card card">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 8 }}>
+                  <span className="resume-edu-card__org">{ed.org}</span>
+                  <span className="pill pill--blue" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>{ed.gpa}</span>
+                </div>
+                <p className="resume-edu-card__degree">{ed.degree}</p>
+                <p className="resume-edu-card__period">{ed.period}</p>
+                <p className="resume-edu-card__detail">{ed.detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Certifications */}
+        <div className="resume-block">
+          <h3 className="resume-block__label">Certifications</h3>
+          <div className="resume-certs">
+            {CERTIFICATIONS.map(c => (
+              <span key={c} className="resume-cert">{c}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+      <span className="section__watermark" aria-hidden="true">CV</span>
+    </section>
+  )
+}
+
+// ── Section 6: Pen & Paper ───────────────────────────────────────────────────
+import { WRITINGS } from '../data/writings.js'
 
 function PenAndPaperSection() {
   const [ref, revealed] = useScrollReveal()
@@ -639,45 +793,53 @@ function PenAndPaperSection() {
           </div>
 
           <div className="writing-list">
-            {filtered.map(w => (
-              <div
-                className="writing-row"
-                key={w.id}
-                onClick={() => toggleExpand(w.id)}
-                role="button"
-                tabIndex={0}
-                onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && toggleExpand(w.id)}
-              >
-                <div className="writing-row__header">
-                  <span className={`type-pill ${w.type === 'blog' ? 'type-pill--blog' : 'type-pill--preprint'}`}>
-                    {w.type === 'blog' ? 'blog' : 'pre-print'}
-                  </span>
-                  <span className="writing-row__title">{w.title}</span>
-                  <span className={`status-pill status-pill--${w.status}`}>
-                    {w.status === 'coming-soon' ? 'coming soon'
-                      : w.status === 'in-progress' ? 'in progress'
-                      : w.status}
-                  </span>
-                  {w.url && (
-                    <a
-                      href={w.url}
-                      style={{ color: 'var(--blue)', fontSize: 16, marginLeft: 4 }}
-                      onClick={e => e.stopPropagation()}
-                      aria-label={`Open ${w.title}`}
-                    >
-                      ↗
-                    </a>
-                  )}
+            {filtered.map(w => {
+              const slug = w.url?.split('/').pop()
+              const isPublished = w.status === 'published' && slug
+              return (
+                <div
+                  key={w.id}
+                  className="writing-row"
+                  onClick={() => isPublished ? null : toggleExpand(w.id)}
+                  role={isPublished ? undefined : 'button'}
+                  tabIndex={0}
+                  onKeyDown={e => !isPublished && (e.key === 'Enter' || e.key === ' ') && toggleExpand(w.id)}
+                >
+                  {isPublished
+                    ? (
+                      <Link to={`/blog/${slug}`} className="writing-row__link-wrap">
+                        <div className="writing-row__header">
+                          <span className="type-pill type-pill--blog">blog</span>
+                          <span className="writing-row__title">{w.title}</span>
+                          <span className="status-pill status-pill--published">published</span>
+                          <span style={{ color: 'var(--muted)', fontSize: 13, marginLeft: 4 }}>→</span>
+                        </div>
+                        <p className="writing-row__subtitle">{w.subtitle}</p>
+                      </Link>
+                    )
+                    : (
+                      <>
+                        <div className="writing-row__header">
+                          <span className={`type-pill ${w.type === 'blog' ? 'type-pill--blog' : 'type-pill--preprint'}`}>
+                            {w.type === 'blog' ? 'blog' : 'pre-print'}
+                          </span>
+                          <span className="writing-row__title">{w.title}</span>
+                          <span className={`status-pill status-pill--${w.status}`}>
+                            {w.status === 'coming-soon' ? 'coming soon' : 'in progress'}
+                          </span>
+                        </div>
+                        <p className="writing-row__subtitle">{w.subtitle}</p>
+                        <div className={`writing-expand ${expanded.has(w.id) ? 'open' : ''}`}>
+                          {w.desc}
+                        </div>
+                      </>
+                    )}
                 </div>
-                <p className="writing-row__subtitle">{w.subtitle}</p>
-                <div className={`writing-expand ${expanded.has(w.id) ? 'open' : ''}`}>
-                  {w.desc}
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
 
-          <Link to="/pen-and-paper" className="see-all">see all writing →</Link>
+          <Link to="/blog" className="see-all">see all writing →</Link>
         </div>
       </div>
       <span className="section__watermark" aria-hidden="true">WROTE</span>
@@ -868,7 +1030,7 @@ function FooterGame() {
             <span className="footer__score">
               {gameState === 'idle'    && 'space / tap to play'}
               {gameState === 'playing' && padScore(score)}
-              {gameState === 'dead'    && `rip — ${padScore(score)}`}
+              {gameState === 'dead'    && `rip. ${padScore(score)}`}
             </span>
             {hiScore > 0 && (
               <span className="footer__hi">HI {padScore(hiScore)}</span>
@@ -901,12 +1063,17 @@ function FooterGame() {
           {(gameState === 'idle' || gameState === 'dead') && (
             <div className="game-strip__msg">
               {gameState === 'idle'
-                ? 'bh is offline — tap to run'
+                ? 'bh is offline. tap to run'
                 : <>{deathMsg}<br /><span style={{ opacity: 0.6 }}>tap to retry</span></>}
             </div>
           )}
         </div>
 
+        <div className="footer__links">
+          <a href="mailto:blessykonedana@gmail.com" className="footer__contact-link">email</a>
+          <a href="https://www.linkedin.com/in/blessykonedana/" target="_blank" rel="noopener noreferrer" className="footer__contact-link">LinkedIn</a>
+          <a href="https://github.com/Kbhadassah777" target="_blank" rel="noopener noreferrer" className="footer__contact-link">GitHub</a>
+        </div>
         <div className="footer__meta">
           <span>© 2026 Blessy Hadassa Konedana</span>
           <span>made with too much coffee and one too many context windows</span>
