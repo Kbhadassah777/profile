@@ -671,14 +671,13 @@ body {
   color: inherit;
 }
 .writing-row__header { display: flex; align-items: center; gap: 12px; }
-.writing-row__title { flex: 1; font-size: 17px; font-weight: 400; color: var(--ink); }
+.writing-row__main { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.writing-row__title { font-size: 17px; font-weight: 400; color: var(--ink); }
 .writing-row__subtitle {
   font-family: var(--mono);
   font-size: 12px;
   letter-spacing: 0.04em;
   color: var(--muted);
-  margin-top: 6px;
-  padding-left: 72px;
 }
 
 .type-pill {
@@ -1179,7 +1178,6 @@ body {
   .startup-card:nth-child(3) { transform: none; }
 
   /* Writing rows */
-  .writing-row__subtitle,
   .writing-expand { padding-left: 0; }
   .writing-row__header { flex-wrap: wrap; gap: 8px; }
   .writing-row__title  { font-size: 15px; }
@@ -1210,8 +1208,16 @@ body {
   .footer__meta { flex-direction: column; align-items: flex-start; gap: 4px; }
 
   /* Runner game */
-  .game-strip { height: 110px; }
-  .game-strip__msg { font-size: 10px; letter-spacing: 0.12em; }
+  .game-strip { height: 120px; }
+  .game-strip__msg { font-size: 10px; letter-spacing: 0.1em; padding: 0 12px; }
+  .runner { left: 56px; bottom: 14px; width: 24px; height: 38px; }
+  .obstacle { bottom: 18px; height: 22px; }
+  @keyframes runner-jump {
+    0%   { transform: translateY(0); }
+    38%  { transform: translateY(-32px); }
+    62%  { transform: translateY(-32px); }
+    100% { transform: translateY(0); }
+  }
 }
 
 /* ── Small phones ─────────────────────────── */

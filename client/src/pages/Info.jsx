@@ -810,11 +810,13 @@ function PenAndPaperSection() {
                       <Link to={`/blog/${slug}`} className="writing-row__link-wrap">
                         <div className="writing-row__header">
                           <span className="type-pill type-pill--blog">blog</span>
-                          <span className="writing-row__title">{w.title}</span>
+                          <div className="writing-row__main">
+                            <span className="writing-row__title">{w.title}</span>
+                            <p className="writing-row__subtitle">{w.subtitle}</p>
+                          </div>
                           <span className="status-pill status-pill--published">published</span>
                           <span style={{ color: 'var(--muted)', fontSize: 13, marginLeft: 4 }}>→</span>
                         </div>
-                        <p className="writing-row__subtitle">{w.subtitle}</p>
                       </Link>
                     )
                     : (
@@ -823,12 +825,14 @@ function PenAndPaperSection() {
                           <span className={`type-pill ${w.type === 'blog' ? 'type-pill--blog' : 'type-pill--preprint'}`}>
                             {w.type === 'blog' ? 'blog' : 'pre-print'}
                           </span>
-                          <span className="writing-row__title">{w.title}</span>
+                          <div className="writing-row__main">
+                            <span className="writing-row__title">{w.title}</span>
+                            <p className="writing-row__subtitle">{w.subtitle}</p>
+                          </div>
                           <span className={`status-pill status-pill--${w.status}`}>
                             {w.status === 'coming-soon' ? 'coming soon' : 'in progress'}
                           </span>
                         </div>
-                        <p className="writing-row__subtitle">{w.subtitle}</p>
                         <div className={`writing-expand ${expanded.has(w.id) ? 'open' : ''}`}>
                           {w.desc}
                         </div>
