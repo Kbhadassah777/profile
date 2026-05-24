@@ -13,6 +13,44 @@ export const WRITINGS = [
     content: `
 <p>I built a portfolio site using Claude Code in a single long session. Then I rebuilt the same site using a subagent-driven multi-agent pipeline — one fresh agent per task, spec compliance review, code quality review, repeat. Here is what the token ledger looks like.</p>
 
+<h2>The Environment</h2>
+
+<p>Claude Code stores every session as a <code>.jsonl</code> file — one JSON object per line, each line representing a turn: user message, assistant response, tool call, tool result. After the single-agent portfolio build completed, that session file sat at <strong>8.3 MB</strong>, containing the full trace of 766 user inputs, all intermediate tool calls, every file read and write, every compile error and fix.</p>
+
+<p>The first step was extracting the signal from the noise. A Python script filtered the JSONL for <code>type: "user"</code> entries, skipping meta messages, sidechain entries, slash command outputs, and /usage fragments that got pasted back into the chat. What remained was 766 timestamped human inputs — the actual prompts that drove the original build.</p>
+
+<pre><code>SKIP_PREFIXES = (
+    "&lt;local-command-caveat&gt;",
+    "&lt;command-name&gt;",
+    "&lt;system-reminder&gt;",
+    "&lt;user-prompt-submit-hook&gt;",
+)
+
+def is_real_input(entry):
+    if entry.get("type") != "user": return False
+    if entry.get("isMeta"):         return False
+    if entry.get("isSidechain"):    return False
+    content = entry["message"].get("content", "")
+    return not any(content.strip().startswith(p) for p in SKIP_PREFIXES)</code></pre>
+
+<p>Reading those 766 inputs in order told the full story: early brainstorm turns asking for a brutalist design with sky-blue blobs, colour palette debates, a CSS animation for a walking shopping cart, a routing bug caused by HashRouter intercepting anchor clicks, a GitHub repo rename mid-session, a context compaction at 91% fill, and finally a Formspree form integration at 2am. The JSONL was a ground-truth log of every decision, mistake, and correction.</p>
+
+<h2>How the Recreation Worked</h2>
+
+<p>The multi-agent run did not replay the 766 inputs one-by-one. Replaying raw chat history would reproduce the mistakes and iterations too — that is not a fair test of the architecture. Instead, the inputs were used as a <em>specification source</em>: reading through them revealed the final settled decisions (palette, sections, copy, animations, deploy config) and those decisions were codified into a 10-task implementation plan.</p>
+
+<p>The plan was the interface between the two runs. Each task had:</p>
+<ul>
+  <li>Exact file paths to create or modify</li>
+  <li>Complete code specs (not "implement X" — actual CSS values, JSX structure, API endpoints)</li>
+  <li>A reference pointer to the original file for verbatim copy tasks</li>
+  <li>Explicit acceptance criteria</li>
+</ul>
+
+<p>Then the <code>superpowers:subagent-driven-development</code> skill dispatched the pipeline: one implementer subagent per task with a cold context window containing only the task spec and relevant file paths, followed by a spec compliance reviewer (did the implementation match the spec exactly?), then a code quality reviewer (are there broken imports, runtime errors, anti-patterns?). Each review loop ran until both reviewers approved before moving to the next task.</p>
+
+<p>Ten tasks. Twenty-plus subagent dispatches. Ten scoped commits. The build was clean at every checkpoint.</p>
+
 <h2>The Experiment</h2>
 
 <p>The single-agent run was organic: 766 user inputs over three days, simultaneous design exploration and implementation, color palette debates, routing bugs, a renamed GitHub repo, and a context compaction at 91% fill. Total cost: <strong>$30.32</strong>. Total cache reads: <strong>59.7M tokens</strong>.</p>
