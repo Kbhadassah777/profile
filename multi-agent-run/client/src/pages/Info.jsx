@@ -664,6 +664,144 @@ function StartupsSection() {
     </section>
   )
 }
-function ResumeSection()    { return <section id="resume" /> }
+const EXPERIENCE = [
+  {
+    id: 'qualcomm',
+    org: 'Qualcomm',
+    role: 'Engineer',
+    period: 'Jun 2025 – present',
+    points: [
+      'Building a CI platform that orchestrates and executes jobs on requested resources using Jenkins pipelines.',
+      'Solely architected and maintains the Context Service & CLI (Node.js + MongoDB) for runtime context accessibility.',
+      'Built a Template Service (à la GitHub Actions) and enhanced job orchestration.',
+      'Designed a web crawler for automated AWS Parameter Store access.',
+    ],
+  },
+  {
+    id: 'stax',
+    org: 'Stax.AI',
+    role: 'Software Engineer',
+    period: '2024 – Jun 2025',
+    points: [
+      'Built a job orchestrator using PostgreSQL and RabbitMQ with retries, DLQs, and multi-cloud scaling.',
+      'Designed an OCR + GPT-3.5 pipeline with prompt chaining and fuzzy logic for large-scale document verification.',
+      'Developed a file sync interface (React + Node.js + AWS S3 / IAM) used by 70% of customers.',
+      'Migrated services to GCP Cloud Functions and Compute Engine.',
+    ],
+  },
+  {
+    id: 'jio',
+    org: 'Reliance Jio',
+    role: 'Software Developer',
+    period: 'Aug 2020 – Nov 2021',
+    points: [
+      'Built indoor tracking device application with Java, MySQL, and Spring Boot.',
+      'Spring Boot microservice to monitor out-of-zone tags, improved location accuracy by 30%.',
+      'Optimised DB by indexing tables: 20% reduction in response time; simplified queries with Oracle views.',
+      'Streamlined CI/CD deployment in Azure DevOps across multiple teams.',
+    ],
+  },
+]
+
+const EDUCATION = [
+  {
+    id: 'asu',
+    org: 'Arizona State University',
+    degree: 'M.S. Computer Science',
+    period: 'Jan 2022 – Dec 2023',
+    gpa: '3.94 / 4.0',
+    detail: 'Distributed Database Systems · Software Security · HCI · Data Mining · Statistical ML · Planning & Learning in AI · Semantic Web Mining',
+  },
+  {
+    id: 'vit',
+    org: 'Vellore Institute of Technology',
+    degree: 'B.Tech Electronics & Comm. Engineering',
+    period: 'Jul 2016 – Jun 2020',
+    gpa: '3.26 / 4.0',
+    detail: 'Minor: IoT & Sensors · OOP · DSA · Cloud Computing · Neural Networks · AI with Python',
+  },
+]
+
+const CERTIFICATIONS = [
+  'AWS Cloud Practitioner',
+  'Azure Database Administrator Associate',
+  'Azure Data Fundamentals',
+]
+
+function ResumeSection() {
+  const [ref, revealed] = useScrollReveal()
+  const [openExp, setOpenExp] = useState(null)
+
+  return (
+    <section className="section section--gray" id="resume">
+      <Blobs count={6} seed={9} />
+      <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
+        <span className="eyebrow">résumé</span>
+        <h2 className="headline">the <span className="headline-gradient">full picture.</span></h2>
+
+        {/* Experience */}
+        <div className="resume-block">
+          <h3 className="resume-block__label">Experience</h3>
+          <div className="resume-timeline">
+            {EXPERIENCE.map(e => (
+              <div key={e.id} className="resume-item">
+                <div
+                  className="resume-item__header"
+                  onClick={() => setOpenExp(openExp === e.id ? null : e.id)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={ev => (ev.key === 'Enter' || ev.key === ' ') && setOpenExp(openExp === e.id ? null : e.id)}
+                >
+                  <div className="resume-item__left">
+                    <span className="resume-item__org">{e.org}</span>
+                    <span className="resume-item__role">{e.role}</span>
+                  </div>
+                  <div className="resume-item__right">
+                    <span className="resume-item__period">{e.period}</span>
+                    <span className="resume-item__toggle">{openExp === e.id ? '−' : '+'}</span>
+                  </div>
+                </div>
+                {openExp === e.id && (
+                  <ul className="resume-item__points">
+                    {e.points.map((pt, i) => <li key={i}>{pt}</li>)}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Education */}
+        <div className="resume-block">
+          <h3 className="resume-block__label">Education</h3>
+          <div className="resume-edu-grid">
+            {EDUCATION.map(ed => (
+              <div key={ed.id} className="resume-edu-card card">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, marginBottom: 8 }}>
+                  <span className="resume-edu-card__org">{ed.org}</span>
+                  <span className="pill pill--blue" style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>{ed.gpa}</span>
+                </div>
+                <p className="resume-edu-card__degree">{ed.degree}</p>
+                <p className="resume-edu-card__period">{ed.period}</p>
+                <p className="resume-edu-card__detail">{ed.detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Certifications */}
+        <div className="resume-block">
+          <h3 className="resume-block__label">Certifications</h3>
+          <div className="resume-certs">
+            {CERTIFICATIONS.map(c => (
+              <span key={c} className="resume-cert">{c}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+      <span className="section__watermark" aria-hidden="true">CV</span>
+    </section>
+  )
+}
 function PenAndPaperSection() { return <section id="writing" /> }
 function FooterGame()       { return <footer /> }
