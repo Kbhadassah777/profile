@@ -119,8 +119,8 @@ function PostView({ slug }) {
               )}
             </header>
 
-            {post?.content
-              ? <div className="blog-article__body" dangerouslySetInnerHTML={{ __html: post.content }} />
+            {(post?.content || meta?.content)
+              ? <div className="blog-article__body" dangerouslySetInnerHTML={{ __html: post?.content || meta.content }} />
               : (
                 <div className="blog-article__fallback">
                   <p>{meta?.desc}</p>

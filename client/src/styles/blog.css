@@ -317,6 +317,36 @@
 
 .blog-article__body li { margin-bottom: 8px; }
 
+.blog-article__body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 28px 0;
+  font-size: 14px;
+}
+
+.blog-article__body th,
+.blog-article__body td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid rgba(29,29,31,0.1);
+}
+
+.blog-article__body th {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 2px solid var(--ink);
+}
+
+.blog-article__body td:last-child {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+  font-weight: 600;
+}
+
 .blog-article__medium-link {
   display: inline-block;
   margin-top: 56px;
