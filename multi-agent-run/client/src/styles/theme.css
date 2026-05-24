@@ -1,0 +1,36 @@
+/* ── Design tokens ─────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --display:   'Syne', sans-serif;
+  --mono:      'JetBrains Mono', monospace;
+  --condensed: 'Oswald', sans-serif;
+  --body:      -apple-system, 'Inter', sans-serif;
+  --ink:          #1D1D1F;
+  --bg:           #FFFFFF;
+  --bg-alt:       #F5F3EE;
+  --muted:        #6E6E73;
+  --blue:         #bee3f5;
+  --pink:         #fcc3c3;
+  --purple:       #7F77DD;
+  --paper:        #FAF8F4;
+  --paper-border: #DDD5CC;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 900;
+  opacity: 0.12;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08, 0 0 0 0 0.06, 0 0 0 0 0.04, 0 0 0 0.32 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
+}
+
+body {
+  font-family: var(--body);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
