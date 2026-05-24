@@ -154,6 +154,78 @@
     ]
   },
   {
+    "session_id": "portfolio-build-2026-05-22-to-24",
+    "event_type": "session_summary",
+    "architecture": "single-agent",
+    "phase": "Full portfolio build — features, deploy, polish",
+    "timestamp_start": "2026-05-22",
+    "timestamp_end": "2026-05-24",
+    "cost_usd": 30.32,
+    "cost_usd_note": "delta from 2026-05-12 snapshot ($34.69 total - $4.37)",
+    "tokens": {
+      "delta_from_last_snapshot": {
+        "sonnet-4-6": { "input": 28000, "output": 354400, "cache_read": 59700000, "cache_write": 1491800 },
+        "haiku-4-5":  { "input": 569800, "output": 31900, "cache_read": 2900000, "cache_write": 263200 }
+      },
+      "cumulative_all_sessions": {
+        "sonnet-4-6": { "input": 31300, "output": 442300, "cache_read": 66000000, "cache_write": 1800000, "cost_usd": 33.29 },
+        "haiku-4-5":  { "input": 572200, "output": 31900, "cache_read": 2900000, "cache_write": 263200, "web_searches": 5, "cost_usd": 1.40 },
+        "total_cost_usd": 34.69
+      }
+    },
+    "context_window": {
+      "current_session_pct": 13,
+      "current_week_pct": 21,
+      "week_resets": "2026-05-27 07:00 America/Los_Angeles",
+      "session_resets": "05:10 America/Los_Angeles"
+    },
+    "code_changes": {
+      "lines_added_delta": 4248,
+      "lines_removed_delta": 964,
+      "cumulative_lines_added": 6256,
+      "cumulative_lines_removed": 1134
+    },
+    "files_produced": [
+      "client/src/pages/Blog.jsx (new)",
+      "client/src/styles/blog.css (new)",
+      "client/src/styles/theme.css (new — central design tokens)",
+      "client/src/data/writings.js (new)",
+      "client/public/404.html (new — BrowserRouter SPA redirect)",
+      "client/public/favicon.png (new — BK logo from old portfolio)",
+      ".github/workflows/deploy.yml (new — GitHub Pages CI)",
+      "client/src/pages/Info.jsx (heavily modified)",
+      "client/src/styles/info.css (heavily modified)",
+      "client/src/App.jsx (modified)",
+      "client/vite.config.js (modified)",
+      "client/index.html (modified)"
+    ],
+    "features_shipped": [
+      "Blog page — /blog listing + /blog/:id post reader with Medium RSS fetch + fallback",
+      "Resume section — Qualcomm, Stax.AI, Reliance Jio experience, ASU + VIT education, 3 AWS/Azure certs",
+      "Projects updated — GPT-2 from Scratch + Senior SDE Agent as featured, 3 older projects retained",
+      "GitHub Pages deploy — Actions workflow, HashRouter → BrowserRouter + 404 redirect trick",
+      "Mobile responsive — nav, grids, game strip, lmk block, resume all adapted",
+      "Shopping cart SVG with leg-walking CSS animation (transform-box: view-box)",
+      "Formspree email form — idea + name + email fields, sent/error states",
+      "Now section — studying, building, questioning items",
+      "Central theme.css — all design tokens extracted, shared by info.css and blog.css",
+      "Clean URL slugs — writing IDs instead of Medium article hashes",
+      "Nav fix — scrollIntoView instead of href anchors (HashRouter compat)",
+      "Quirky ticker items + pickleball",
+      "Kicker line: engineer exploring intelligence, systems, and humans",
+      "Repo renamed: react-based-portfolio → profile (kbhadassah777.github.io/profile)",
+      "BK logo favicon from old portfolio"
+    ],
+    "observations": [
+      "cache_read jumped to 66M cumulative — main cost driver across all sessions (90%+ of spend)",
+      "haiku-4-5 jumped from 2.4k to 572k input — likely earlier subagent sessions not captured in snapshots",
+      "single-agent session was cheaper per-feature than multi-agent phases — no subagent re-reads",
+      "context compacted once mid-session — allowed continuation without clearing",
+      "BrowserRouter + 404.html is the correct pattern for GitHub Pages SPA; HashRouter avoided this",
+      "$30.32 for a full portfolio build including blog, resume, deploy, animations, forms, routing"
+    ]
+  },
+  {
     "session_id": "full-session-summary-2026-05-12",
     "event_type": "session_summary",
     "architecture": "multi-agent",
