@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/info.css'
+import { WRITINGS } from '../data/writings.js'
 
 function useScrollReveal() {
   const ref = useRef(null)
@@ -803,5 +804,348 @@ function ResumeSection() {
     </section>
   )
 }
-function PenAndPaperSection() { return <section id="writing" /> }
-function FooterGame()       { return <footer /> }
+// ── Section 6: Pen & Paper ───────────────────────────────────────────────────
+
+function PenAndPaperSection() {
+  const [ref, revealed] = useScrollReveal()
+  const [paperState, setPaperState] = useState('folded')
+  const [filter, setFilter] = useState('All')
+  const [expanded, setExpanded] = useState(new Set())
+
+  useEffect(() => {
+    if (!revealed) return
+    const t1 = setTimeout(() => setPaperState('unfolding'), 200)
+    const t2 = setTimeout(() => setPaperState('unfolded'), 1000)
+    return () => { clearTimeout(t1); clearTimeout(t2) }
+  }, [revealed])
+
+  function toggleExpand(id) {
+    setExpanded(prev => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+  }
+
+  const filtered = WRITINGS.filter(w => {
+    if (filter === 'Blog') return w.type === 'blog'
+    if (filter === 'Pre-print') return w.type === 'preprint'
+    return true
+  })
+
+  return (
+    <section className="section section--white" id="writing">
+      <Blobs count={8} seed={5} />
+      <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
+        <span className="eyebrow">pen & paper</span>
+        <h2 className="headline">things I <span className="headline-gradient">wrote.</span></h2>
+        <p className="subtext">
+          blogs, pre-prints, half-baked thoughts. occasionally coherent.
+        </p>
+
+        <div className={`paper-card ${paperState}`}>
+          <div className="filter-pills">
+            {['All', 'Blog', 'Pre-print'].map(f => (
+              <button
+                key={f}
+                className={`filter-pill ${filter === f ? 'active' : ''}`}
+                onClick={() => setFilter(f)}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+
+          <div className="writing-list">
+            {filtered.map(w => {
+              const isPublished = w.status === 'published'
+              return (
+                <div
+                  key={w.id}
+                  className="writing-row"
+                  onClick={() => isPublished ? null : toggleExpand(w.id)}
+                  role={isPublished ? undefined : 'button'}
+                  tabIndex={0}
+                  onKeyDown={e => !isPublished && (e.key === 'Enter' || e.key === ' ') && toggleExpand(w.id)}
+                >
+                  {isPublished
+                    ? (
+                      <Link to={`/blog/${w.id}`} className="writing-row__link-wrap">
+                        <div className="writing-row__header">
+                          <span className="type-pill type-pill--blog">blog</span>
+                          <div className="writing-row__main">
+                            <span className="writing-row__title">{w.title}</span>
+                            <p className="writing-row__subtitle">{w.subtitle}</p>
+                          </div>
+                          <span className="status-pill status-pill--published">published</span>
+                          <span style={{ color: 'var(--muted)', fontSize: 13, marginLeft: 4 }}>→</span>
+                        </div>
+                      </Link>
+                    )
+                    : (
+                      <>
+                        <div className="writing-row__header">
+                          <span className={`type-pill ${w.type === 'blog' ? 'type-pill--blog' : 'type-pill--preprint'}`}>
+                            {w.type === 'blog' ? 'blog' : 'pre-print'}
+                          </span>
+                          <div className="writing-row__main">
+                            <span className="writing-row__title">{w.title}</span>
+                            <p className="writing-row__subtitle">{w.subtitle}</p>
+                          </div>
+                          <span className={`status-pill status-pill--${w.status}`}>
+                            {w.status === 'coming-soon' ? 'coming soon' : 'in progress'}
+                          </span>
+                        </div>
+                        <div className={`writing-expand ${expanded.has(w.id) ? 'open' : ''}`}>
+                          {w.desc}
+                        </div>
+                      </>
+                    )}
+                </div>
+              )
+            })}
+          </div>
+
+          <Link to="/blog" className="see-all">see all writing →</Link>
+        </div>
+      </div>
+      <span className="section__watermark" aria-hidden="true">WROTE</span>
+    </section>
+  )
+}
+
+// ── Footer / Runner Game ─────────────────────────────────────────────────────
+
+function PandaIcon({ dead }) {
+  return (
+    <svg width="28" height="46" viewBox="0 0 28 46" fill="none" aria-hidden="true">
+      {/* Ears */}
+      <circle cx="7"  cy="7"  r="5.5" fill="#1D1D1F" />
+      <circle cx="21" cy="7"  r="5.5" fill="#1D1D1F" />
+      <circle cx="7"  cy="7"  r="2.8" fill="#2e2e2e" />
+      <circle cx="21" cy="7"  r="2.8" fill="#2e2e2e" />
+      {/* Head */}
+      <circle cx="14" cy="16" r="11"  fill="#FAF8F4" />
+      {/* Eye patches */}
+      <ellipse cx="9.5"  cy="14.5" rx="3.8" ry="4.2" fill="#1D1D1F" />
+      <ellipse cx="18.5" cy="14.5" rx="3.8" ry="4.2" fill="#1D1D1F" />
+      {/* Eye whites */}
+      <circle cx="9.5"  cy="14.5" r="2.2" fill="white" />
+      <circle cx="18.5" cy="14.5" r="2.2" fill="white" />
+      {dead ? (
+        <>
+          <line x1="8.2"  y1="13.2" x2="10.8" y2="15.8" stroke="#1D1D1F" strokeWidth="1.2" strokeLinecap="round" />
+          <line x1="10.8" y1="13.2" x2="8.2"  y2="15.8" stroke="#1D1D1F" strokeWidth="1.2" strokeLinecap="round" />
+          <line x1="17.2" y1="13.2" x2="19.8" y2="15.8" stroke="#1D1D1F" strokeWidth="1.2" strokeLinecap="round" />
+          <line x1="19.8" y1="13.2" x2="17.2" y2="15.8" stroke="#1D1D1F" strokeWidth="1.2" strokeLinecap="round" />
+        </>
+      ) : (
+        <>
+          <circle cx="10"   cy="15"   r="1.2" fill="#1D1D1F" />
+          <circle cx="19"   cy="15"   r="1.2" fill="#1D1D1F" />
+          <circle cx="10.6" cy="14.4" r="0.6" fill="white" />
+          <circle cx="19.6" cy="14.4" r="0.6" fill="white" />
+        </>
+      )}
+      {/* Nose */}
+      <ellipse cx="14" cy="19.5" rx="1.8" ry="1.2" fill="#1D1D1F" />
+      {/* Mouth */}
+      {dead
+        ? <path d="M11.5 23 Q14 21 16.5 23"   stroke="#1D1D1F" strokeWidth="0.9" strokeLinecap="round" fill="none" />
+        : <path d="M11.5 22.5 Q14 25 16.5 22.5" stroke="#1D1D1F" strokeWidth="0.9" strokeLinecap="round" fill="none" />
+      }
+      {/* Blush */}
+      <ellipse cx="4.5" cy="19" rx="2.6" ry="1.7" fill="#fcc3c3" opacity="0.75" />
+      <ellipse cx="23.5" cy="19" rx="2.6" ry="1.7" fill="#fcc3c3" opacity="0.75" />
+      {/* Body */}
+      <ellipse cx="14" cy="33" rx="8.5" ry="8"   fill="#FAF8F4" />
+      {/* Belly circle */}
+      <ellipse cx="14" cy="33.5" rx="4.5" ry="4.5" fill="rgba(190,227,245,0.2)" />
+      {/* Arms */}
+      <ellipse cx="4"  cy="30" rx="3"   ry="2.2" fill="#1D1D1F" transform="rotate(-25 4 30)" />
+      <ellipse cx="24" cy="30" rx="3"   ry="2.2" fill="#1D1D1F" transform="rotate(25 24 30)" />
+      {/* Legs */}
+      <ellipse cx="9.5"  cy="41.5" rx="4"   ry="3.2" fill="#1D1D1F" />
+      <ellipse cx="18.5" cy="41.5" rx="4"   ry="3.2" fill="#1D1D1F" />
+      {/* Paw pads */}
+      <ellipse cx="9.5"  cy="43" rx="2" ry="1.2" fill="rgba(250,248,244,0.4)" />
+      <ellipse cx="18.5" cy="43" rx="2" ry="1.2" fill="rgba(250,248,244,0.4)" />
+    </svg>
+  )
+}
+
+const DEATH_MSGS = [
+  'walked into a cactus. very on brand.',
+  'panda down. shareholders notified.',
+  'fatal error: too many obstacles in life',
+  'bh.exe has stopped working. have you tried turning her off and on again?',
+  'rip 🐼 she was going places (into the obstacle)',
+  'skill issue. respectfully.',
+  'the obstacle was a metaphor. she still lost.',
+]
+
+function FooterGame() {
+  const containerRef = useRef(null)
+  const [gameState, setGameState] = useState('idle')
+  const [score, setScore]         = useState(0)
+  const [hiScore, setHiScore]     = useState(0)
+  const [jumping, setJumping]     = useState(false)
+  const [obstacles, setObstacles] = useState([])
+  const [deathMsg, setDeathMsg]   = useState('')
+
+  const g = useRef({
+    obstacles: [], score: 0, speed: 200,
+    timeSinceLast: 0, nextIn: 2000,
+    raf: null, last: null,
+    jumping: false, state: 'idle', gameW: 700,
+  })
+
+  const CHAR_X = 82, CHAR_W = 28, OBS_W = 14
+
+  // Store loop in ref so RAF callback always has fresh access to g.current
+  const loopRef = useRef(null)
+  loopRef.current = (time) => {
+    const c = g.current
+    if (!c.last) c.last = time
+    const dt = Math.min(time - c.last, 50)
+    c.last = time
+
+    c.obstacles = c.obstacles
+      .map(o => ({ ...o, x: o.x - c.speed * dt / 1000 }))
+      .filter(o => o.x > -(OBS_W + 10))
+
+    c.timeSinceLast += dt
+    if (c.timeSinceLast >= c.nextIn) {
+      c.timeSinceLast = 0
+      c.nextIn = 1500 + Math.random() * 1400
+      c.obstacles.push({ id: time, x: c.gameW })
+    }
+
+    const hit = c.obstacles.some(o =>
+      o.x < CHAR_X + CHAR_W && o.x + OBS_W > CHAR_X && !c.jumping
+    )
+
+    if (hit) {
+      c.state = 'dead'
+      setGameState('dead')
+      setDeathMsg(DEATH_MSGS[Math.floor(Math.random() * DEATH_MSGS.length)])
+      setHiScore(prev => Math.max(prev, Math.floor(c.score)))
+      setObstacles([...c.obstacles])
+      return
+    }
+
+    c.score += dt / 100
+    c.speed = 200 + Math.floor(c.score / 50) * 15
+    setScore(Math.floor(c.score))
+    setObstacles([...c.obstacles])
+    c.raf = requestAnimationFrame(loopRef.current)
+  }
+
+  const doJump = useCallback(() => {
+    const c = g.current
+    if (c.state !== 'playing' || c.jumping) return
+    c.jumping = true
+    setJumping(true)
+    setTimeout(() => { c.jumping = false; setJumping(false) }, 520)
+  }, [])
+
+  const startGame = useCallback(() => {
+    const c = g.current
+    c.gameW = containerRef.current?.offsetWidth ?? 700
+    Object.assign(c, {
+      obstacles: [], score: 0, timeSinceLast: 0,
+      nextIn: 2000, state: 'playing', last: null,
+      speed: 200, jumping: false,
+    })
+    setGameState('playing')
+    setScore(0)
+    setJumping(false)
+    setObstacles([])
+    if (c.raf) cancelAnimationFrame(c.raf)
+    c.raf = requestAnimationFrame(loopRef.current)
+  }, [])
+
+  useEffect(() => () => { if (g.current.raf) cancelAnimationFrame(g.current.raf) }, [])
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.code === 'Space' || e.key === 'ArrowUp') {
+        e.preventDefault()
+        const c = g.current
+        if (c.state === 'idle' || c.state === 'dead') startGame()
+        else doJump()
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [startGame, doJump])
+
+  function handleTap() {
+    const c = g.current
+    if (c.state === 'idle' || c.state === 'dead') startGame()
+    else doJump()
+  }
+
+  const padScore = (n) => String(n).padStart(5, '0')
+
+  return (
+    <footer className="footer">
+      <div className="footer__inner">
+        <div className="footer__top">
+          <span className="eyebrow">you found the bottom</span>
+          <div className="footer__score-row">
+            <span className="footer__score">
+              {gameState === 'idle'    && 'space / tap to play'}
+              {gameState === 'playing' && padScore(score)}
+              {gameState === 'dead'    && `rip. ${padScore(score)}`}
+            </span>
+            {hiScore > 0 && (
+              <span className="footer__hi">HI {padScore(hiScore)}</span>
+            )}
+          </div>
+        </div>
+
+        <div
+          className="game-strip"
+          ref={containerRef}
+          onClick={handleTap}
+          role="button"
+          tabIndex={0}
+          aria-label="runner mini game — press space or tap to jump"
+          onKeyDown={e => { if (e.key === ' ') { e.preventDefault(); handleTap() } }}
+        >
+          <div className="game-strip__ground" />
+          <div className="cloud cloud--1" aria-hidden="true" />
+          <div className="cloud cloud--2" aria-hidden="true" />
+          <div className="cloud cloud--3" aria-hidden="true" />
+
+          <div className={`runner${jumping ? ' runner--jump' : ''}${gameState === 'dead' ? ' runner--dead' : ''}`}>
+            <PandaIcon dead={gameState === 'dead'} />
+          </div>
+
+          {obstacles.map(o => (
+            <div key={o.id} className="obstacle" style={{ left: Math.round(o.x) }} />
+          ))}
+
+          {(gameState === 'idle' || gameState === 'dead') && (
+            <div className="game-strip__msg">
+              {gameState === 'idle'
+                ? 'bh is offline. tap to run'
+                : <>{deathMsg}<br /><span style={{ opacity: 0.6 }}>tap to retry</span></>}
+            </div>
+          )}
+        </div>
+
+        <div className="footer__links">
+          <a href="mailto:blessykonedana@gmail.com" className="footer__contact-link">email</a>
+          <a href="https://www.linkedin.com/in/blessykonedana/" target="_blank" rel="noopener noreferrer" className="footer__contact-link">LinkedIn</a>
+          <a href="https://github.com/Kbhadassah777" target="_blank" rel="noopener noreferrer" className="footer__contact-link">GitHub</a>
+        </div>
+        <div className="footer__meta">
+          <span>© 2026 Blessy Hadassa Konedana</span>
+          <span>made with too much coffee and one too many context windows</span>
+        </div>
+      </div>
+    </footer>
+  )
+}
