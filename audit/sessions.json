@@ -226,6 +226,75 @@
     ]
   },
   {
+    "session_id": "multi-agent-run-2026-05-24",
+    "event_type": "session_summary",
+    "architecture": "multi-agent",
+    "phase": "Multi-agent portfolio rebuild — 10 tasks, subagent-driven-development",
+    "timestamp": "2026-05-24",
+    "cost_usd": 6.54,
+    "cost_usd_note": "delta from 2026-05-22-to-24 snapshot ($41.23 total - $34.69)",
+    "tokens": {
+      "delta_from_last_snapshot": {
+        "sonnet-4-6": { "input": 8000, "output": 95800, "cache_read": 10400000, "cache_write": 500000 },
+        "haiku-4-5":  { "input": 100, "output": 4900, "cache_read": 600000, "cache_write": 49200 }
+      },
+      "cumulative_all_sessions": {
+        "sonnet-4-6": { "input": 39300, "output": 538100, "cache_read": 76400000, "cache_write": 2300000, "cost_usd": 39.69 },
+        "haiku-4-5":  { "input": 572300, "output": 36800, "cache_read": 3500000, "cache_write": 312400, "web_searches": 5, "cost_usd": 1.54 },
+        "total_cost_usd": 41.23
+      }
+    },
+    "context_window": {
+      "current_session_pct": 46,
+      "current_week_pct": 25,
+      "session_resets": "20:00 America/Los_Angeles",
+      "note": "46% at end of multi-agent run — far below the 91% peak of the single-agent session"
+    },
+    "subagent_dispatches": {
+      "total": 20,
+      "implementers": 10,
+      "spec_reviewers": 4,
+      "quality_reviewers": 5,
+      "note": "Tasks 2, 6, 7, 8, 9 used fast-track review (verbatim copies or trivial ports)"
+    },
+    "skills_used": [
+      { "skill": "superpowers:subagent-driven-development", "usage_pct": 21 }
+    ],
+    "code_changes": {
+      "lines_added_delta": 4002,
+      "lines_removed_delta": 0,
+      "cumulative_lines_added": 10258,
+      "cumulative_lines_removed": 1265
+    },
+    "commits": 10,
+    "files_produced": [
+      "multi-agent-run/client/ (full Vite project scaffold)",
+      "multi-agent-run/client/src/styles/theme.css",
+      "multi-agent-run/client/src/styles/info.css (1263 lines)",
+      "multi-agent-run/client/src/styles/blog.css",
+      "multi-agent-run/client/src/pages/Info.jsx (all 7 sections)",
+      "multi-agent-run/client/src/pages/Blog.jsx",
+      "multi-agent-run/client/src/data/writings.js",
+      "multi-agent-run/client/public/404.html",
+      ".github/workflows/deploy-multi-agent.yml"
+    ],
+    "comparison_vs_single_agent": {
+      "cost_usd": { "single": 30.32, "multi": 6.54, "reduction_pct": 78 },
+      "cache_read_tokens": { "single": 59700000, "multi": 10400000, "reduction_pct": 83 },
+      "output_tokens": { "single": 354400, "multi": 95800, "reduction_pct": 73 },
+      "cache_write_tokens": { "single": 1491800, "multi": 500000, "reduction_pct": 66 },
+      "context_peak_pct": { "single": 91, "multi": 46 }
+    },
+    "research_notes": {
+      "key_finding": "Multi-agent with pre-written plan is 78% cheaper than single-agent exploration",
+      "caveat": "Comparison is not apples-to-apples — multi-agent had a pre-written plan and reference files; single-agent did simultaneous design + iteration + implementation",
+      "cache_read_driver": "Single-agent accumulated 91% context before compacting; each late-session prompt re-read ~180k tokens. Multi-agent started each task fresh.",
+      "subagent_skill_share": "21% of session usage came from superpowers:subagent-driven-development",
+      "cheaper_model_impact": "Using haiku for simpler review tasks (Tasks 4, 5) contributed to cost reduction",
+      "real_cost_of_plan": "The plan itself was produced in the original $30.32 session — multi-agent's efficiency depends on that prior design work"
+    }
+  },
+  {
     "session_id": "full-session-summary-2026-05-12",
     "event_type": "session_summary",
     "architecture": "multi-agent",
