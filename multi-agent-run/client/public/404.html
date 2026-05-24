@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blessy Konedana</title>
+  <script>
+    var l = window.location;
+    l.replace(
+      l.protocol + '//' + l.host + '/profile/' +
+      '?p=' + encodeURIComponent(l.pathname.slice('/profile/'.length) + l.search) +
+      (l.hash ? l.hash : '')
+    );
+  </script>
+</head>
+</html>
