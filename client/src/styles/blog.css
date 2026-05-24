@@ -1,4 +1,5 @@
-/* Blog page — shares design tokens from info.css */
+/* Blog page */
+@import './theme.css';
 
 .blog-page {
   min-height: 100vh;

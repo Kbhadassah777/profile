@@ -95,9 +95,13 @@ function Blobs({ count = 8, seed = 0 }) {
 // ── Ticker ───────────────────────────────────────────────────────────────────
 
 const TICKER_ITEMS = [
-  'Builder', '·', 'Researcher', '·', 'Multi-agent systems', '·',
-  'Context windows', '·', 'GPT-2 from scratch', '·', 'Ships at 3am', '·',
-  'ML papers', '·', "Let's cook", '·',
+  'Attention is all you need (allegedly)', '·',
+  'GPT-2 from scratch because why not', '·', 'Context windows stress me out', '·',
+  'Multi-agent chaos engineer', '·', 'Shipping before it\'s ready since forever', '·',
+  'NLP refresher arc', '·', 'Still reading that paper', '·',
+  'Intelligence is just vibes', '·', 'Let\'s cook something', '·',
+  'Systems that don\'t collapse', '·', 'Human in the loop (barely)', '·',
+  'Pickle in the jar when it comes to pickleball', '·',
 ]
 
 function Ticker() {
@@ -125,6 +129,7 @@ function Nav() {
       <div className="nav__inner">
         <button className="nav__logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>BH</button>
         <ul className="nav__links">
+          <li><button className="nav__link" onClick={() => scrollTo('now')}>now</button></li>
           <li><button className="nav__link" onClick={() => scrollTo('projects')}>projects</button></li>
           <li><button className="nav__link" onClick={() => scrollTo('resume')}>resume</button></li>
           <li><button className="nav__link" onClick={() => scrollTo('writing')}>writing</button></li>
@@ -152,6 +157,7 @@ export default function Info() {
       <main>
         <HeroSection />
         <WhoIAmSection />
+        <NowSection />
         <ProjectsSection />
         <ResumeSection />
         <PenAndPaperSection />
@@ -172,7 +178,7 @@ function HeroSection() {
       <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
         <div className="kicker">
           <span className="kicker__dot" />
-          yes, I am a real person
+          engineer exploring intelligence, systems, and humans
         </div>
         <div className="avatar">BH</div>
         <h1 className="headline">Hi, I'm<br /><span className="headline-gradient">Blessy.</span></h1>
@@ -268,7 +274,54 @@ function WhoIAmSection() {
   )
 }
 
-// ── Section 3: Projects ──────────────────────────────────────────────────────
+// ── Section 3: Now ───────────────────────────────────────────────────────────
+
+const NOW = [
+  {
+    label: 'studying',
+    text: 'Revising NLP with Stanford CME295 as a refresher. Going back to basics on purpose.',
+    url: 'https://cme295.stanford.edu/',
+  },
+  {
+    label: 'building',
+    text: 'Multi-agent systems that don\'t fall apart when you look at them wrong.',
+    url: null,
+  },
+  {
+    label: 'questioning',
+    text: 'How much of "intelligence" is just very well-compressed pattern matching.',
+    url: null,
+  },
+]
+
+function NowSection() {
+  const [ref, revealed] = useScrollReveal()
+  return (
+    <section className="section section--white now-section" id="now">
+      <Blobs count={4} seed={9} />
+      <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
+        <span className="eyebrow">what I'm up to</span>
+        <h2 className="headline">now.</h2>
+        <ul className="now-list">
+          {NOW.map((item, i) => (
+            <li className="now-item" key={i}>
+              <span className="now-item__label">{item.label}</span>
+              <p className="now-item__text">
+                {item.text}
+                {item.url && (
+                  <a href={item.url} target="_blank" rel="noopener noreferrer" className="now-item__link">↗</a>
+                )}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <span className="section__watermark" aria-hidden="true">NOW</span>
+    </section>
+  )
+}
+
+// ── Section 4: Projects ──────────────────────────────────────────────────────
 
 const PROJECTS = [
   {
@@ -406,13 +459,6 @@ const PITCHES = [
   },
 ]
 
-const IDEA_COMMENTS = [
-  'bold.',
-  "someone's already doing this but go off.",
-  "i like where your head's at.",
-  "controversial. I'm in.",
-  'adding this to my personality.',
-]
 
 function StartupsSection() {
   const [ref, revealed] = useScrollReveal()
@@ -454,12 +500,6 @@ function StartupsSection() {
     }
   }
 
-  function removeIdea(i) {
-    const next = ideas.filter((_, idx) => idx !== i)
-    setIdeas(next)
-    localStorage.setItem('blessy-ideas', JSON.stringify(next))
-    if (next.length === 0) setExcited(false)
-  }
 
   return (
     <section className="section section--gray" id="startups">
@@ -500,10 +540,10 @@ function StartupsSection() {
         <span className="eyebrow">currently out grocery shopping (for ideas)</span>
         <h2 className="headline">do you want me to<br /><span className="headline-gradient">add something?</span></h2>
         <p className="subtext">
-          drop it on the list. i'll find it when i'm back.
+          Drop it on the list. I'll find it when I'm back.
         </p>
         <p>
-          i'll get it for the both of us and we can cook it together!
+          I'll get it for the both of us and we can cook it together!
         </p>
 
         <svg
@@ -576,7 +616,7 @@ function StartupsSection() {
 
         {lmkState === 'sent' ? (
           <div className="lmk-success">
-            <p className="lmk-success__msg">got it. i'll look for the aisle it is in NOW!!!!</p>
+            <p className="lmk-success__msg">Got it. I'll look for the aisle it is in NOW!!!!</p>
             <button className="lmk-success__reset" onClick={() => { setLmkIdea(''); setLmkName(''); setLmkEmail(''); setLmkState('idle'); setExcited(false) }}>
               drop another idea
             </button>
