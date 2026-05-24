@@ -418,12 +418,11 @@ function StartupsSection() {
   const [ref, revealed] = useScrollReveal()
   const [pitchIdx, setPitchIdx] = useState(0)
   const [pitchReaction, setPitchReaction] = useState('')
-  const [ideas, setIdeas] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('blessy-ideas') || '[]') } catch { return [] }
-  })
-  const [ideaInput, setIdeaInput] = useState('')
-  const [ideaComment, setIdeaComment] = useState('')
   const [excited, setExcited] = useState(false)
+  const [lmkIdea, setLmkIdea]   = useState('')
+  const [lmkName, setLmkName]   = useState('')
+  const [lmkEmail, setLmkEmail] = useState('')
+  const [lmkState, setLmkState] = useState('idle') // idle | sending | sent | error
 
   function handlePitch(choice) {
     const current = PITCHES[pitchIdx]
@@ -434,16 +433,25 @@ function StartupsSection() {
     }, 1400)
   }
 
-  function addIdea() {
-    const trimmed = ideaInput.trim()
-    if (!trimmed) return
-    const next = [...ideas, trimmed]
-    setIdeas(next)
-    localStorage.setItem('blessy-ideas', JSON.stringify(next))
-    setIdeaInput('')
-    setIdeaComment(IDEA_COMMENTS[Math.floor(Math.random() * IDEA_COMMENTS.length)])
+  async function submitLmk(e) {
+    e.preventDefault()
+    if (!lmkIdea.trim()) return
+    setLmkState('sending')
     setExcited(true)
-    setTimeout(() => setIdeaComment(''), 2000)
+    try {
+      const res = await fetch('https://formspree.io/f/mbdbkeyo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          idea: lmkIdea,
+          name: lmkName || 'anonymous',
+          _replyto: lmkEmail || '',
+        }),
+      })
+      setLmkState(res.ok ? 'sent' : 'error')
+    } catch {
+      setLmkState('error')
+    }
   }
 
   function removeIdea(i) {
@@ -566,28 +574,46 @@ function StartupsSection() {
           <ellipse cx="80" cy="116" rx="70" ry="4" fill="var(--blue)" opacity="0.15" />
         </svg>
 
-        <div className="idea-input-row">
-          <input
-            className="idea-input"
-            type="text"
-            placeholder="add to the list..."
-            value={ideaInput}
-            onChange={e => setIdeaInput(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && addIdea()}
-          />
-          <button className="idea-add-btn" onClick={addIdea}>add</button>
-        </div>
-        <p className="idea-comment">{ideaComment}</p>
-
-        {ideas.length > 0 && (
-          <ul className="idea-list">
-            {ideas.map((idea, i) => (
-              <li className="idea-item" key={i}>
-                <span>{idea}</span>
-                <button className="idea-remove" onClick={() => removeIdea(i)} aria-label="remove idea">×</button>
-              </li>
-            ))}
-          </ul>
+        {lmkState === 'sent' ? (
+          <div className="lmk-success">
+            <p className="lmk-success__msg">got it. i'll look for the aisle it is in NOW!!!!</p>
+            <button className="lmk-success__reset" onClick={() => { setLmkIdea(''); setLmkName(''); setLmkEmail(''); setLmkState('idle'); setExcited(false) }}>
+              drop another idea
+            </button>
+          </div>
+        ) : (
+          <form className="lmk-form" onSubmit={submitLmk}>
+            <input
+              className="idea-input"
+              type="text"
+              placeholder="the idea..."
+              value={lmkIdea}
+              onChange={e => setLmkIdea(e.target.value)}
+              required
+            />
+            <div className="lmk-contact-row">
+              <input
+                className="idea-input"
+                type="text"
+                placeholder="your name (optional)"
+                value={lmkName}
+                onChange={e => setLmkName(e.target.value)}
+              />
+              <input
+                className="idea-input"
+                type="email"
+                placeholder="your email (optional)"
+                value={lmkEmail}
+                onChange={e => setLmkEmail(e.target.value)}
+              />
+            </div>
+            {lmkState === 'error' && (
+              <p className="lmk-error">something went wrong. try again?</p>
+            )}
+            <button className="idea-add-btn" type="submit" disabled={lmkState === 'sending'}>
+              {lmkState === 'sending' ? 'sending...' : 'send it'}
+            </button>
+          </form>
         )}
 
         </div>{/* end lmk-block */}

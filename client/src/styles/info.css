@@ -546,6 +546,37 @@ body {
 .cartoon.excited .face-neutral { display: none; }
 .cartoon.excited .face-excited { display: block; }
 
+.lmk-form { display: flex; flex-direction: column; gap: 12px; margin-top: 24px; }
+.lmk-contact-row { display: flex; gap: 12px; }
+.lmk-contact-row .idea-input { flex: 1; }
+.lmk-error {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--pink);
+}
+.lmk-success { margin-top: 24px; }
+.lmk-success__msg {
+  font-size: 16px;
+  color: rgba(245, 243, 238, 0.75);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+.lmk-success__reset {
+  background: none;
+  border: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245, 243, 238, 0.4);
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.lmk-success__reset:hover { color: rgba(245, 243, 238, 0.8); }
+.idea-add-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 .idea-input-row { display: flex; gap: 12px; margin-top: 24px; }
 .idea-input {
   flex: 1;
@@ -1185,9 +1216,9 @@ body {
   /* lmk block */
   .lmk-block { padding: 28px 20px; margin-top: 32px; }
 
-  /* Idea input: stack vertically */
-  .idea-input-row { flex-direction: column; }
-  .idea-add-btn   { width: 100%; text-align: center; padding: 14px; }
+  /* Idea form: stack vertically */
+  .idea-input-row, .lmk-contact-row { flex-direction: column; }
+  .idea-add-btn { width: 100%; text-align: center; padding: 14px; }
 
   /* Paper card */
   .paper-card { padding: 24px 20px; }
