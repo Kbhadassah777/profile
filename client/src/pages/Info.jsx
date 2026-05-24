@@ -292,6 +292,11 @@ const NOW = [
     text: 'How much of "intelligence" is just very well-compressed pattern matching.',
     url: null,
   },
+  {
+    label: 'on the courts',
+    text: 'Pickling in pickleball courts.',
+    url: null,
+  },
 ]
 
 function NowSection() {
