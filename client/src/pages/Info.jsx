@@ -172,6 +172,13 @@ export default function Info() {
 
 function HeroSection() {
   const [ref, revealed] = useScrollReveal()
+
+  useEffect(() => {
+    if (sessionStorage.getItem('viewed-home')) return
+    sessionStorage.setItem('viewed-home', '1')
+    fetch('https://api.counterapi.dev/v1/blessy-portfolio/home/up').catch(() => {})
+  }, [])
+
   return (
     <section className="section section--white">
       <Blobs count={8} seed={1} />
