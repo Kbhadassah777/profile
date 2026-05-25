@@ -66,6 +66,7 @@ export const WRITINGS = [
   <li><strong>Write the plan first.</strong> The plan pays for itself across every subagent that reads it. The expensive part of the original session was the discovery work — and that work is what makes a good plan possible.</li>
   <li><strong>Use the cheapest model that can handle the task.</strong> Several review tasks ran on Haiku 4.5. Model selection had more impact than architecture choice at this scale.</li>
   <li><strong>Cache reads are the cost to watch.</strong> Not output. Not input. Cache reads.</li>
+  <li><strong>Compaction is a symptom, not a solution.</strong> The single-agent session hit 91% context fill and triggered an automatic compaction — the model summarises prior context and continues from the summary. That compression is lossy. Detail gets flattened. The session continued, but with a degraded view of its own history. The multi-agent run ended at 46% without compacting once, because each subagent started fresh. If you are hitting compaction regularly, the architecture is telling you something: context is accumulating faster than the work justifies. That is either a signal to break the task down, or to switch to a fresh-context pattern.</li>
 </ul>
 
 <p>The follow-up post looks at what the diff between the two codebases actually revealed — which turned out to be the more interesting finding.</p>
