@@ -2,7 +2,7 @@ export default {
   id: 'multiagent-cost',
   type: 'blog',
   title: 'Multi-agents cost 78% less. Here is the token breakdown.',
-  subtitle: 'a controlled(ish) experiment in LLM architecture.',
+  subtitle: 'a controlled(ish) experiment in agentic workflow architectures.',
   status: 'published',
   url: null,
   feedUrl: null,
