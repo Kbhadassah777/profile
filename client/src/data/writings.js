@@ -30,9 +30,9 @@ export const WRITINGS = [
 
 <h2>The Rebuild</h2>
 
-<p>The 766 inputs were not replayed. That would replay the mistakes too. Instead they were used as a specification source — reading through them revealed the final settled decisions and those got distilled into a 10-task plan. Each task had exact file paths, full code specs (not "implement X" — actual values), and explicit acceptance criteria.</p>
+<p>The 766 inputs were not replayed. Replaying them would reproduce the mistakes and iteration too — that is the single-agent run, not a test of a different architecture. Instead they were read as a specification source: what did the session actually settle on? That answer became a 10-task plan.</p>
 
-<p>The pipeline per task: one implementer subagent with a cold context window, one spec compliance reviewer, one code quality reviewer. Loop until both approve, then commit and move on. Twenty-plus dispatches across ten tasks. The build was clean at every checkpoint.</p>
+<p>Each task went through a fixed pipeline: one agent implemented it with no prior context, a second checked whether the output matched the spec, a third checked code quality. Nothing moved forward until both reviewers signed off. Twenty-plus agent dispatches across ten tasks.</p>
 
 <h2>The Numbers</h2>
 
