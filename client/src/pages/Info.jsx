@@ -37,7 +37,7 @@ function ScrollProgress() {
 
 function Blobs({ count = 8, seed = 0 }) {
   const blobs = useMemo(() => {
-    // LCG deterministic RNG — same seed always produces the same layout
+    // LCG deterministic RNG : same seed always produces the same layout
     let state = seed * 9301 + 49297
     const next = () => { state = (state * 9301 + 49297) % 233280; return state / 233280 }
 
@@ -572,9 +572,9 @@ function StartupsSection() {
           </g>
           {/* body */}
           <line x1="38" y1="36" x2="38" y2="72" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
-          {/* right arm — forward, gripping cart handle */}
+          {/* right arm : forward, gripping cart handle */}
           <line x1="38" y1="48" x2="70" y2="58" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
-          {/* left arm — back swing */}
+          {/* left arm : back swing */}
           <line x1="38" y1="48" x2="20" y2="62" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" />
           {/* walking legs */}
           <g className="leg-left">
@@ -811,7 +811,7 @@ function ResumeSection() {
 }
 
 // ── Section 6: Pen & Paper ───────────────────────────────────────────────────
-import { WRITINGS } from '../data/writings.js'
+import { WRITINGS } from '../data/writings/index.js'
 
 function PenAndPaperSection() {
   const [ref, revealed] = useScrollReveal()
@@ -1118,7 +1118,7 @@ function FooterGame() {
           onClick={handleTap}
           role="button"
           tabIndex={0}
-          aria-label="runner mini game — press space or tap to jump"
+          aria-label="runner mini game : press space or tap to jump"
           onKeyDown={e => { if (e.key === ' ') { e.preventDefault(); handleTap() } }}
         >
           <div className="game-strip__ground" />

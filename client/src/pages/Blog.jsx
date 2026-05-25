@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { WRITINGS } from '../data/writings.js'
+import { WRITINGS } from '../data/writings/index.js'
 import '../styles/blog.css'
 
 function formatDate(str) {

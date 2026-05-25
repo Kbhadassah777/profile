@@ -1133,7 +1133,7 @@
   position: relative;
 }
 .resume-item__points li::before {
-  content: '—';
+  content: ':';
   position: absolute;
   left: 0;
   color: var(--blue);
