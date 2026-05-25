@@ -26,7 +26,7 @@ export const WRITINGS = [
     content = entry["message"].get("content", "")
     return not any(content.strip().startswith(p) for p in SKIP_PREFIXES)</code></pre>
 
-<p>Reading them in order gave a clear picture of what the session actually did: colour palette iteration, a shopping cart CSS animation, a HashRouter bug, a repo rename, a context compaction at 91% fill, Formspree integration at 2am. The JSONL is a complete trace of how a build actually happens — not how it looks in a commit history.</p>
+<p>Reading them in order gave a clear picture of what the session actually did: colour palette iteration, a shopping cart CSS animation, a HashRouter bug, a repo rename, a context compaction at 91% fill, Formspree integration at 2am.</p>
 
 <h2>The Rebuild</h2>
 
