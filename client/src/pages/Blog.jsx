@@ -83,6 +83,7 @@ function PostView({ slug }) {
   const meta = WRITINGS.find(w => w.id === slug)
   const [post, setPost]       = useState(null)
   const [loading, setLoading] = useState(true)
+  const [views, setViews]     = useState(null)
 
   useEffect(() => {
     if (!meta?.feedUrl || !meta?.url) { setLoading(false); return }
@@ -98,6 +99,20 @@ function PostView({ slug }) {
       .catch(() => setLoading(false))
   }, [slug, meta?.feedUrl, meta?.url])
 
+  useEffect(() => {
+    if (!slug) return
+    const sessionKey = `viewed-${slug}`
+    const cached = sessionStorage.getItem(sessionKey)
+    if (cached) { setViews(parseInt(cached, 10)); return }
+    fetch(`https://api.counterapi.dev/v1/blessy-portfolio/${slug}/up`)
+      .then(r => r.json())
+      .then(d => {
+        setViews(d.count)
+        sessionStorage.setItem(sessionKey, String(d.count))
+      })
+      .catch(() => {})
+  }, [slug])
+
   return (
     <div className="blog-page">
       <BlogNav />
@@ -109,9 +124,14 @@ function PostView({ slug }) {
         {!loading && (
           <article className="blog-article">
             <header className="blog-article__header">
-              {(post?.pubDate || meta?.date) && (
-                <span className="blog-article__date">{formatDate(post?.pubDate || meta?.date)}</span>
-              )}
+              <div className="blog-article__meta">
+                {(post?.pubDate || meta?.date) && (
+                  <span className="blog-article__date">{formatDate(post?.pubDate || meta?.date)}</span>
+                )}
+                {views !== null && (
+                  <span className="blog-article__views">{views.toLocaleString()} reads</span>
+                )}
+              </div>
               <h1 className="blog-article__title">{post?.title || meta?.title}</h1>
               {meta?.subtitle && <p className="blog-article__subtitle">{meta.subtitle}</p>}
               {(post?.thumbnail || meta?.thumbnail) && (

@@ -200,14 +200,30 @@
   border-bottom: 1px solid rgba(29,29,31,0.1);
 }
 
+.blog-article__meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
 .blog-article__date {
-  display: block;
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-bottom: 12px;
+}
+
+.blog-article__views {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 2px 8px;
+  border: 1px solid rgba(29,29,31,0.15);
+  border-radius: 999px;
 }
 
 .blog-article__title {
