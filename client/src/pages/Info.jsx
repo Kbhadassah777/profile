@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/info.css'
 
@@ -33,65 +33,6 @@ function ScrollProgress() {
   return <div className="scroll-progress" style={{ width: `${pct}%` }} />
 }
 
-// ── Blobs ─────────────────────────────────────────────────────────────────────
-
-function Blobs({ count = 8, seed = 0 }) {
-  const blobs = useMemo(() => {
-    // LCG deterministic RNG : same seed always produces the same layout
-    let state = seed * 9301 + 49297
-    const next = () => { state = (state * 9301 + 49297) % 233280; return state / 233280 }
-
-    const placed = []
-    const results = []
-
-    for (let i = 0; i < count; i++) {
-      const size    = 80 + next() * 120    // 80–200 px
-      const opacity = 0.52 + next() * 0.28
-      const blue    = i % 2 === 0
-      const r       = size / 2
-
-      // Attempt up to 50 positions; keep first that doesn't overlap any placed blob
-      let x = 5 + next() * 90
-      let y = 5 + next() * 90
-      for (let t = 0; t < 50; t++) {
-        const cx = 5 + next() * 90
-        const cy = 5 + next() * 90
-        const overlaps = placed.some(p => {
-          const dx = (cx - p.x) / 100 * 1200
-          const dy = (cy - p.y) / 100 * 700
-          return Math.sqrt(dx * dx + dy * dy) < (r + p.r) * 1.2
-        })
-        if (!overlaps) { x = cx; y = cy; break }
-      }
-
-      placed.push({ x, y, r })
-      results.push({ x, y, size, blue, opacity })
-    }
-
-    return results
-  }, [count, seed])
-
-  return (
-    <div className="blobs" aria-hidden="true">
-      {blobs.map((b, i) => (
-        <div
-          key={i}
-          className="blob"
-          style={{
-            left:       `${b.x}%`,
-            top:        `${b.y}%`,
-            width:      b.size,
-            height:     b.size,
-            background: b.blue
-              ? `rgba(190,227,245,${b.opacity.toFixed(2)})`
-              : `rgba(252,195,195,${b.opacity.toFixed(2)})`,
-          }}
-        />
-      ))}
-    </div>
-  )
-}
-
 // ── Ticker ───────────────────────────────────────────────────────────────────
 
 const TICKER_ITEMS = [
@@ -121,6 +62,56 @@ function Ticker() {
 
 function scrollTo(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+}
+
+// ── Guide strip ──────────────────────────────────────────────────────────────
+
+const GUIDE_LINKS = {
+  hiring: [
+    { label: 'the work & innovation', sub: 'projects, built and shipped', id: 'projects' },
+    { label: 'the full resume', sub: 'experience, education, certs', id: 'resume' },
+    { label: 'why ed-tech, why now', sub: 'the reasons behind the work', id: 'about' },
+  ],
+  research: [
+    { label: 'research takes & analysis', sub: 'reviews, writing, understanding', id: 'writing' },
+    { label: 'the reasoning behind it', sub: 'passions, the "why"', id: 'about' },
+    { label: 'technical builds', sub: 'systems, agents, from-scratch work', id: 'projects' },
+  ],
+}
+
+function GuideStrip() {
+  const [audience, setAudience] = useState('hiring')
+  return (
+    <div className="guide-strip">
+      <div className="guide-strip__label">here for...</div>
+      <div className="guide-strip__toggle" role="tablist">
+        <button
+          role="tab"
+          aria-selected={audience === 'hiring'}
+          className={`guide-strip__tab ${audience === 'hiring' ? 'active' : ''}`}
+          onClick={() => setAudience('hiring')}
+        >
+          hiring
+        </button>
+        <button
+          role="tab"
+          aria-selected={audience === 'research'}
+          className={`guide-strip__tab ${audience === 'research' ? 'active' : ''}`}
+          onClick={() => setAudience('research')}
+        >
+          research
+        </button>
+      </div>
+      <div className="guide-strip__links">
+        {GUIDE_LINKS[audience].map(link => (
+          <button key={link.label} className="guide-strip__link" onClick={() => scrollTo(link.id)}>
+            <span className="guide-strip__link-label">{link.label}</span>
+            <span className="guide-strip__link-sub">{link.sub}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 function Nav() {
@@ -156,6 +147,7 @@ export default function Info() {
       <Nav />
       <main>
         <HeroSection />
+        <GuideStrip />
         <WhoIAmSection />
         <NowSection />
         <ProjectsSection />
@@ -181,18 +173,22 @@ function HeroSection() {
 
   return (
     <section className="section section--white">
-      <Blobs count={8} seed={1} />
+      <span className="fig-label" aria-hidden="true">FIG. 01 / SELF</span>
       <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
-        <div className="kicker">
-          <span className="kicker__dot" />
-          engineer exploring intelligence, systems, and humans
+        <div className="hero-panel">
+          <div className="kicker">
+            <span className="kicker__dot" />
+            woman engineer · building a smarter, more educated society
+          </div>
+          <div className="avatar">BH</div>
+          <h1 className="headline">Hi, I'm<br /><span className="headline-gradient">Blessy.</span></h1>
+          <p className="subtext">
+            I believe the cleverest way to build a better society is to rebuild
+            how it learns. I design the small techniques, and the systems
+            behind them, that make tech click, so anyone, anywhere, can learn
+            anything.
+          </p>
         </div>
-        <div className="avatar">BH</div>
-        <h1 className="headline">Hi, I'm<br /><span className="headline-gradient">Blessy.</span></h1>
-        <p className="subtext">
-          I build things. I break things. I google why things broke. I fix it
-          in a forever loop. Occasionally in that order.
-        </p>
       </div>
       <span className="section__watermark" aria-hidden="true">BLESSY</span>
     </section>
@@ -242,11 +238,44 @@ function WhoIAmSection() {
   }
 
   return (
-    <section className="section section--gray">
-      <Blobs count={8} seed={2} />
+    <section className="section section--gray" id="about">
+      <span className="fig-label" aria-hidden="true">FIG. 02 / SELF</span>
       <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
         <span className="eyebrow">a few things about me</span>
         <h2 className="headline">who am <span className="headline-gradient">I?</span></h2>
+
+        <div className="id-diagram">
+          <div className="id-diagram__center">
+            <span className="eyebrow">portrait</span>
+            <div className="id-diagram__name">Blessy <b>Konedana</b></div>
+          </div>
+          <ul className="id-callouts">
+            <li className="id-callout">
+              <span className="id-callout__text">ALMOST 5 YRS BACKEND &amp; CI/CD: QUALCOMM, STAX.AI, RELIANCE JIO</span>
+            </li>
+            <li className="id-callout">
+              <span className="id-callout__text">ASU MSCS: 3.94 GPA</span>
+            </li>
+            <li className="id-callout">
+              <span className="id-callout__text">GPT-2 FROM SCRATCH, PAPER + KARPATHY INSPIRED</span>
+            </li>
+            <li className="id-callout">
+              <span className="id-callout__text">MULTI-AGENT SAAS ARCHITECTURE</span>
+            </li>
+            <li className="id-callout">
+              <span className="id-callout__text">WOMAN ENGINEER, BUILDING EDUCATION INTO TECH</span>
+            </li>
+            <li className="id-callout">
+              <span className="id-callout__text">AI AGENTS &amp; LLM SYSTEMS</span>
+            </li>
+            <li className="id-callout">
+              <span className="id-callout__text">TEACHING &amp; TECHNICAL WRITING</span>
+            </li>
+            <li className="id-callout">
+              <span className="id-callout__text">BUILDING A SMARTER SOCIETY, ONE LEARNER AT A TIME</span>
+            </li>
+          </ul>
+        </div>
 
         <div className="fact-cards">
           {FACTS.map((f, i) => (
@@ -310,7 +339,6 @@ function NowSection() {
   const [ref, revealed] = useScrollReveal()
   return (
     <section className="section section--white now-section" id="now">
-      <Blobs count={4} seed={9} />
       <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
         <span className="eyebrow">what I'm up to</span>
         <h2 className="headline">now.</h2>
@@ -347,8 +375,8 @@ const PROJECTS = [
   {
     id: 'sde-agent',
     title: 'Senior SDE Agent',
-    desc: 'multi-agent master-slave architecture with Claude Opus 4.5. token optimisation, task delivery, feedback loops, and hallucination mitigation via context health checks.',
-    tech: ['Claude Opus 4.5', 'Multi-Agent', 'Node.js'],
+    desc: 'multi-agent master-slave architecture with an LLM backbone. token optimisation, task delivery, feedback loops, and hallucination mitigation via context health checks.',
+    tech: ['LLM Orchestration', 'Multi-Agent', 'Node.js'],
     badge: 'in progress',
     longest: true,
   },
@@ -372,7 +400,7 @@ const PROJECTS = [
     id: 'saas',
     title: 'Multi-agent SaaS',
     desc: 'agents talking to agents. what could go wrong. building the infra to find out.',
-    tech: ['Claude API', 'Node.js', 'React'],
+    tech: ['LLM APIs', 'Node.js', 'React'],
     badge: 'in progress',
     longest: true,
   },
@@ -395,7 +423,6 @@ function ProjectsSection() {
 
   return (
     <section className="section section--white" id="projects">
-      <Blobs count={8} seed={3} />
       <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
         <span className="eyebrow">things I built</span>
 
@@ -515,7 +542,6 @@ function StartupsSection() {
 
   return (
     <section className="section section--gray" id="startups">
-      <Blobs count={8} seed={4} />
       <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
 
         <span className="eyebrow">ideas that were definitely going to change the world. briefly.</span>
@@ -697,7 +723,7 @@ const EXPERIENCE = [
     period: '2024 – Jun 2025',
     points: [
       'Built a job orchestrator using PostgreSQL and RabbitMQ with retries, DLQs, and multi-cloud scaling.',
-      'Designed an OCR + GPT-3.5 pipeline with prompt chaining and fuzzy logic for large-scale document verification.',
+      'Designed an OCR + LLM pipeline with prompt chaining and fuzzy logic for large-scale document verification.',
       'Developed a file sync interface (React + Node.js + AWS S3 / IAM) used by 70% of customers.',
       'Migrated services to GCP Cloud Functions and Compute Engine.',
     ],
@@ -747,7 +773,6 @@ function ResumeSection() {
 
   return (
     <section className="section section--gray" id="resume">
-      <Blobs count={6} seed={9} />
       <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
         <span className="eyebrow">résumé</span>
         <h2 className="headline">the <span className="headline-gradient">full picture.</span></h2>
@@ -849,7 +874,6 @@ function PenAndPaperSection() {
 
   return (
     <section className="section section--white" id="writing">
-      <Blobs count={8} seed={5} />
       <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
         <span className="eyebrow">pen & paper</span>
         <h2 className="headline">things I <span className="headline-gradient">wrote.</span></h2>
@@ -884,9 +908,11 @@ function PenAndPaperSection() {
                 >
                   {isPublished
                     ? (
-                      <Link to={`/blog/${w.id}`} className="writing-row__link-wrap">
+                      <Link to={w.route || `/blog/${w.id}`} className="writing-row__link-wrap">
                         <div className="writing-row__header">
-                          <span className="type-pill type-pill--blog">blog</span>
+                          <span className={`type-pill ${w.type === 'research' ? 'type-pill--preprint' : 'type-pill--blog'}`}>
+                            {w.type === 'research' ? 'research' : 'blog'}
+                          </span>
                           <div className="writing-row__main">
                             <span className="writing-row__title">{w.title}</span>
                             <p className="writing-row__subtitle">{w.subtitle}</p>

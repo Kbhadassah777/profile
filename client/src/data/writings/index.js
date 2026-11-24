@@ -1,17 +1,13 @@
 import multiagentCost from './multiagent-cost.js'
 import sameCommandsDifferentCode from './same-commands-different-code.js'
 import gpt2Blog from './gpt2-blog.js'
-import contextBlog from './context-blog.js'
-import multiagentBlog from './multiagent-blog.js'
-import frameworkBlog from './framework-blog.js'
-import contextPreprint from './context-preprint.js'
+import multiagentTutoring from './multiagent-tutoring.js'
+import tutorCopilotAnalysis from './tutor-copilot-analysis.js'
 
 export const WRITINGS = [
+  tutorCopilotAnalysis,
+  multiagentTutoring,
   multiagentCost,
   sameCommandsDifferentCode,
   gpt2Blog,
-  contextBlog,
-  multiagentBlog,
-  frameworkBlog,
-  contextPreprint,
 ]

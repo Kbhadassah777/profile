@@ -97,22 +97,39 @@
   overflow: hidden;
   scroll-margin-top: 56px;
 }
-.section--white { background: var(--bg); }
-.section--gray  { background: var(--bg-alt); }
-
-/* ── Blobs ────────────────────────────────── */
-.blobs {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 0;
+/* Blueprint grid texture, shared by every section — the throughline
+   that ties the Hero/Who-I-Am redesign to the rest of the site */
+.section--white,
+.section--gray {
+  background-image:
+    repeating-linear-gradient(0deg, var(--grid-line) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, var(--grid-line) 0 1px, transparent 1px 28px);
 }
-.blob {
+.section--white { background-color: var(--bg); }
+.section--gray  { background-color: var(--bg-alt); }
+
+/* Drafting corner marks on every section — the recurring "technical plate" cue */
+.section::before,
+.section::after {
+  content: '';
   position: absolute;
-  border-radius: 50%;
-  filter: blur(72px);
-  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.55;
+}
+.section::before {
+  top: 24px;
+  left: 24px;
+  border-top: 2px solid var(--ink);
+  border-left: 2px solid var(--ink);
+}
+.section::after {
+  bottom: 24px;
+  right: 24px;
+  border-bottom: 2px solid var(--ink);
+  border-right: 2px solid var(--ink);
 }
 
 .section__watermark {
@@ -184,7 +201,7 @@
   margin-bottom: 24px;
 }
 .headline-gradient {
-  background: linear-gradient(135deg, #1a90c8, #cc5075);
+  background: linear-gradient(135deg, #1b3a6b, #c1452c);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -267,6 +284,157 @@
   animation: float 3.4s ease-in-out infinite;
 }
 
+/* ── FIG label (Hero / Who I Am annotation) ─ */
+.fig-label {
+  position: absolute;
+  top: 28px;
+  right: 32px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  z-index: 1;
+}
+
+/* ── Hero panel ───────────────────────────── */
+.hero-panel {
+  border: 1px dashed var(--ink);
+  border-radius: 4px;
+  padding: 32px 36px;
+  background: rgba(255, 255, 255, 0.4);
+  display: inline-block;
+}
+
+/* ── Who I Am: identity diagram ────────────── */
+.id-diagram {
+  position: relative;
+  margin: 36px 0 48px;
+  padding: 56px 24px;
+  min-height: 260px;
+}
+.id-diagram__center {
+  text-align: center;
+}
+.id-diagram__name {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: 30px;
+  color: var(--ink);
+}
+.id-diagram__name b { font-weight: 600; }
+.id-callouts {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 32px;
+  margin-top: 44px;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.id-callout {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.id-callout::before {
+  content: '';
+  width: 28px;
+  border-top: 1px dashed var(--muted);
+  flex-shrink: 0;
+  transform: translateY(-4px);
+}
+.id-callout__text {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+/* ── Guide strip ──────────────────────────── */
+.guide-strip {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 24px 28px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  background-image:
+    repeating-linear-gradient(0deg, var(--grid-line) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, var(--grid-line) 0 1px, transparent 1px 28px);
+  background-color: var(--bg);
+  border-bottom: 1px dashed rgba(24,43,74,0.25);
+}
+.guide-strip__label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.guide-strip__toggle {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.guide-strip__tab {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border: 1px dashed var(--ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+.guide-strip__tab.active {
+  background: var(--ink);
+  color: var(--bg);
+  border-style: solid;
+}
+.guide-strip__links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+.guide-strip__link {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 8px 14px;
+  border: 1px dashed rgba(24,43,74,0.35);
+  border-radius: 4px;
+  background: rgba(255,255,255,0.4);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.guide-strip__link:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0 var(--blue);
+  border-color: var(--ink);
+}
+.guide-strip__link-label {
+  font-size: 13px;
+  color: var(--ink);
+  font-weight: 500;
+}
+.guide-strip__link-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+}
+
 /* ── Pills ────────────────────────────────── */
 .pill {
   display: inline-block;
@@ -288,7 +456,7 @@
 /* ── Cards ────────────────────────────────── */
 .card {
   background: var(--bg);
-  border: 1px solid var(--ink);
+  border: 1px dashed var(--ink);
   border-radius: 4px;
   padding: 28px;
   position: relative;
@@ -364,7 +532,7 @@
   margin-top: 48px;
   padding: 32px;
   background: var(--bg);
-  border: 1px solid var(--ink);
+  border: 1px dashed var(--ink);
   border-radius: 4px;
   text-align: center;
 }
@@ -586,7 +754,7 @@
   justify-content: space-between;
   padding: 12px 20px;
   background: var(--bg);
-  border: 1px solid var(--ink);
+  border: 1px dashed var(--ink);
   border-radius: 0;
   font-size: 15px;
 }
@@ -1068,7 +1236,7 @@
 /* Timeline items */
 .resume-timeline { display: flex; flex-direction: column; gap: 2px; }
 .resume-item {
-  border: 1px solid rgba(29,29,31,0.14);
+  border: 1px dashed rgba(24,43,74,0.3);
   border-radius: 4px;
   overflow: hidden;
   background: var(--bg);
@@ -1204,7 +1372,14 @@
   /* Grids → single column */
   .card-grid,
   .fact-cards,
-  .startup-cards { grid-template-columns: 1fr; }
+  .startup-cards,
+  .id-callouts { grid-template-columns: 1fr; }
+
+  .hero-panel { padding: 24px 20px; }
+  .fig-label { top: 16px; right: 16px; }
+
+  .guide-strip { flex-direction: column; align-items: stretch; padding: 16px 20px 22px; }
+  .guide-strip__links { flex-direction: column; }
 
   /* Remove startup card tilts */
   .startup-card:nth-child(1),

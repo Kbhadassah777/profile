@@ -41,7 +41,7 @@ function PostList() {
         {published.length > 0 && (
           <div className="blog-grid">
             {published.map(w => (
-              <Link key={w.id} to={`/blog/${w.id}`} className="blog-card">
+              <Link key={w.id} to={w.route || `/blog/${w.id}`} className="blog-card">
                 {w.thumbnail && (
                   <div className="blog-card__thumb-wrap">
                     <img src={w.thumbnail} alt="" className="blog-card__thumb" />
@@ -49,7 +49,7 @@ function PostList() {
                 )}
                 <div className="blog-card__body">
                   {w.date && <span className="blog-card__date">{formatDate(w.date)}</span>}
-                  <span className="blog-card__type">{w.type === 'blog' ? 'blog' : 'pre-print'}</span>
+                  <span className="blog-card__type">{w.type === 'blog' ? 'blog' : w.type === 'research' ? 'research' : 'pre-print'}</span>
                   <h2 className="blog-card__title">{w.title}</h2>
                   <p className="blog-card__excerpt">{w.desc}</p>
                   <span className="blog-card__cta">read →</span>
@@ -107,6 +107,7 @@ function PostView({ slug }) {
     fetch(`https://api.counterapi.dev/v1/blessy-portfolio/${slug}/up`)
       .then(r => r.json())
       .then(d => {
+        if (typeof d.count !== 'number') return
         setViews(d.count)
         sessionStorage.setItem(sessionKey, String(d.count))
       })
@@ -128,7 +129,7 @@ function PostView({ slug }) {
                 {(post?.pubDate || meta?.date) && (
                   <span className="blog-article__date">{formatDate(post?.pubDate || meta?.date)}</span>
                 )}
-                {views !== null && (
+                {typeof views === 'number' && (
                   <span className="blog-article__views">{views.toLocaleString()} reads</span>
                 )}
               </div>

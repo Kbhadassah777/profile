@@ -5,22 +5,25 @@
 html { scroll-behavior: smooth; }
 
 :root {
-  /* Fonts */
-  --display:   'Syne', sans-serif;
-  --mono:      'JetBrains Mono', monospace;
-  --condensed: 'Oswald', sans-serif;
-  --body:      -apple-system, 'Inter', sans-serif;
+  /* Fonts — IBM Plex: designed for technical/engineering contexts,
+     matches the blueprint-diagram reference this redesign is built from */
+  --display:   'IBM Plex Sans', sans-serif;
+  --mono:      'IBM Plex Mono', monospace;
+  --condensed: 'IBM Plex Sans', sans-serif;
+  --body:      -apple-system, 'IBM Plex Sans', sans-serif;
 
-  /* Palette */
-  --ink:          #1D1D1F;
-  --bg:           #FFFFFF;
-  --bg-alt:       #F5F3EE;
-  --muted:        #6E6E73;
-  --blue:         #bee3f5;
-  --pink:         #fcc3c3;
+  /* Palette — blueprint ink/paper, with the old pink repointed to a warm
+     terracotta "marginalia" tone (the human accent against the technical blue) */
+  --ink:          #182B4A;
+  --bg:           #FAF8F2;
+  --bg-alt:       #EFEEE4;
+  --muted:        #5C6B7E;
+  --blue:         #8fc1e8;
+  --pink:         #f2b088;
   --purple:       #7F77DD;
   --paper:        #FAF8F4;
   --paper-border: #DDD5CC;
+  --grid-line:    rgba(24, 43, 74, 0.07);
 }
 
 /* ── Grain overlay ─────────────────────────────────────────────────────────── */

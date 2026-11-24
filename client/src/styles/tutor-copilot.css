@@ -1,0 +1,372 @@
+@font-face {
+  font-family: 'ChalkScript';
+  src: url('../assets/fonts/caveat.woff2') format('woff2');
+  font-weight: 400 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'ChalkHand';
+  src: url('../assets/fonts/patrick-hand.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+.tc-page {
+  --board:        #1c2b23;
+  --board-deep:   #121d17;
+  --chalk:        #eef1e8;
+  --chalk-dim:    rgba(238,241,232,.58);
+  --chalk-faint:  rgba(238,241,232,.3);
+  --chalk-blue:   #a9cdda;
+  --chalk-gold:   #e8c66a;
+  --chalk-coral:  #e0906f;
+  --wood:         #6b4a32;
+  --wood-dark:    #4a3222;
+
+  background: var(--board-deep);
+  color: var(--chalk);
+  font-family: 'ChalkHand', cursive;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.tc-board {
+  position: relative;
+  width: 100%;
+  max-width: 880px;
+  background:
+    radial-gradient(ellipse 120% 70% at 50% 0%, rgba(255,255,255,0.05), transparent 60%),
+    var(--board);
+  box-shadow: inset 0 0 160px rgba(0,0,0,0.55);
+  padding: 8px 8px 48px;
+  cursor: crosshair;
+}
+
+.tc-board::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1, 0 0 0 0 1, 0 0 0 0 1, 0 0 0 0.05 0'/></filter><rect width='300' height='300' filter='url(%23n)'/></svg>");
+}
+
+.tc-tray {
+  height: 26px;
+  margin: 0 -8px 28px;
+  background: linear-gradient(180deg, var(--wood), var(--wood-dark));
+  border-bottom: 3px solid rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 28px;
+}
+.tc-chalk-stick {
+  width: 30px; height: 7px; border-radius: 2px;
+  background: var(--chalk);
+  opacity: 0.9;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
+.tc-eraser {
+  width: 34px; height: 10px; border-radius: 2px;
+  background: #8a7a5c;
+  border: 1px solid rgba(0,0,0,0.3);
+}
+
+.tc-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.tc-back {
+  display: inline-block;
+  font-family: 'ChalkHand', cursive;
+  font-size: 15px;
+  color: var(--chalk-dim);
+  text-decoration: none;
+}
+.tc-back:hover { color: var(--chalk); }
+
+.tc-print-btn {
+  font-family: 'ChalkHand', cursive;
+  font-size: 14px;
+  color: var(--chalk-dim);
+  background: transparent;
+  border: 1px dashed var(--chalk-faint);
+  border-radius: 4px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+.tc-print-btn:hover {
+  color: var(--chalk);
+  border-color: var(--chalk-dim);
+}
+
+.tc-main {
+  padding: 8px 40px 0;
+}
+
+.tc-masthead {
+  text-align: center;
+  margin-bottom: 44px;
+}
+.tc-masthead .tc-kicker {
+  font-family: 'ChalkHand', cursive;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: var(--chalk-dim);
+  text-transform: uppercase;
+}
+.tc-title {
+  font-family: 'ChalkScript', cursive;
+  font-weight: 700;
+  font-size: clamp(52px, 9vw, 78px);
+  line-height: 0.95;
+  margin: 6px 0 10px;
+  text-wrap: balance;
+  text-shadow: 0 0 14px rgba(238,241,232,0.18);
+}
+.tc-masthead .tc-sub {
+  font-size: 19px;
+  color: var(--chalk-dim);
+  max-width: 46ch;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+.tc-masthead .tc-citation {
+  margin-top: 18px;
+  font-size: 14px;
+  color: var(--chalk-faint);
+}
+
+.tc-underline {
+  width: 220px;
+  height: 10px;
+  margin: 18px auto 0;
+  opacity: 0.8;
+  display: block;
+}
+
+.tc-panel {
+  margin-bottom: 56px;
+}
+.tc-panel__label {
+  font-family: 'ChalkScript', cursive;
+  font-weight: 700;
+  font-size: 30px;
+  color: var(--chalk-gold);
+  margin-bottom: 4px;
+}
+.tc-panel__lede {
+  font-size: 17px;
+  color: var(--chalk-dim);
+  max-width: 62ch;
+  line-height: 1.55;
+  margin-bottom: 18px;
+}
+.tc-panel svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+.tc-diagram-caption {
+  font-size: 14px;
+  color: var(--chalk-faint);
+  text-align: center;
+  margin-top: 6px;
+}
+
+.tc-stat-row {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.tc-stat {
+  flex: 1 1 220px;
+  min-width: 200px;
+}
+.tc-stat__num {
+  font-family: 'ChalkScript', cursive;
+  font-weight: 700;
+  font-size: 46px;
+  color: var(--chalk-gold);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.tc-stat__cap {
+  font-size: 15px;
+  color: var(--chalk-dim);
+  margin-top: 4px;
+  max-width: 30ch;
+}
+
+.tc-margin-note {
+  position: relative;
+  border: 2px solid var(--chalk-coral);
+  border-radius: 2px;
+  padding: 18px 22px;
+  transform: rotate(-0.6deg);
+  max-width: 640px;
+  margin: 28px auto 0;
+  background: rgba(224,144,111,0.04);
+}
+.tc-margin-note::before {
+  content: 'A technologist\'s margin note';
+  position: absolute;
+  top: -13px; left: 18px;
+  background: var(--board);
+  padding: 0 8px;
+  font-size: 13px;
+  color: var(--chalk-coral);
+  letter-spacing: 0.04em;
+}
+.tc-margin-note p {
+  margin: 0 0 10px;
+  color: var(--chalk);
+  font-size: 16px;
+  line-height: 1.55;
+}
+.tc-margin-note p:last-child { margin-bottom: 0; }
+.tc-margin-note strong { color: var(--chalk-coral); }
+
+.tc-closing {
+  text-align: center;
+  max-width: 56ch;
+  margin: 0 auto;
+}
+.tc-closing p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--chalk);
+}
+.tc-signature {
+  font-family: 'ChalkScript', cursive;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--chalk-dim);
+  margin-top: 22px;
+}
+
+.tc-source-link {
+  color: var(--chalk-blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.tc-footer {
+  margin-top: 48px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--chalk-faint);
+  font-size: 13px;
+  color: var(--chalk-faint);
+  text-align: center;
+  line-height: 1.8;
+}
+
+@media (max-width: 560px) {
+  .tc-main { padding: 8px 20px 0; }
+  .tc-stat-row { gap: 20px; }
+}
+
+.tc-note {
+  position: absolute;
+  z-index: 5;
+  max-width: 220px;
+  transform: rotate(-2deg);
+  cursor: text;
+}
+.tc-note__text {
+  font-family: 'ChalkScript', cursive;
+  font-size: 20px;
+  line-height: 1.25;
+  color: var(--chalk-coral);
+  min-width: 60px;
+  min-height: 26px;
+  outline: none;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.tc-note__text:empty::before {
+  content: attr(data-placeholder);
+  color: rgba(224,144,111,0.45);
+}
+.tc-note__close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--chalk-coral);
+  background: var(--board);
+  color: var(--chalk-coral);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.tc-note:hover .tc-note__close,
+.tc-note:focus-within .tc-note__close {
+  opacity: 1;
+}
+
+.tc-note-hint {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'ChalkHand', cursive;
+  font-size: 13px;
+  color: var(--chalk-faint);
+  pointer-events: none;
+  text-align: center;
+  white-space: nowrap;
+}
+@media (max-width: 560px) {
+  .tc-note-hint { white-space: normal; max-width: 80%; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tc-reveal { animation: tc-chalk-in 0.9s ease both; }
+}
+@keyframes tc-chalk-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Print / export ───────────────────────────────────────── */
+@media print {
+  .tc-page {
+    min-height: 0;
+  }
+  .tc-board {
+    box-shadow: none;
+    max-width: 100%;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .tc-board::before {
+    display: none; /* chalk-dust texture wastes ink and adds nothing on paper */
+  }
+  .tc-toolbar,
+  .tc-note__close,
+  .tc-note-hint {
+    display: none !important;
+  }
+  .tc-note {
+    cursor: default;
+  }
+  .tc-note__text {
+    outline: none;
+  }
+  .tc-panel,
+  .tc-margin-note,
+  .tc-masthead {
+    break-inside: avoid;
+  }
+}
