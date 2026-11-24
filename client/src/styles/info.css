@@ -328,14 +328,18 @@
 .id-diagram__center {
   text-align: center;
 }
+.id-diagram__center .eyebrow {
+  margin-bottom: 8px;
+}
 .id-diagram__photo {
+  display: block;
   width: 168px;
   height: 168px;
+  margin: 0 auto 10px;
   object-fit: cover;
   object-position: top center;
   border: 1px dashed var(--ink);
   border-radius: 4px;
-  margin-bottom: 14px;
 }
 .id-diagram__name {
   font-family: var(--display);

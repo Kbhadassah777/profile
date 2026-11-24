@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/info.css'
-import portraitPhoto from '../assets/portrait.jpg'
+import portraitPhoto from '../assets/portrait.png'
 
 function useScrollReveal() {
   const ref = useRef(null)
