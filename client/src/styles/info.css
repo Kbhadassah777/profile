@@ -283,6 +283,18 @@
   margin-bottom: 32px;
   animation: float 3.4s ease-in-out infinite;
 }
+.research-interests {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px dashed rgba(24,43,74,0.3);
+}
+.research-interests .eyebrow { margin-bottom: 10px; }
+.research-interests p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink);
+  max-width: 56ch;
+}
 
 /* ── FIG label (Hero / Who I Am annotation) ─ */
 .fig-label {
@@ -315,6 +327,15 @@
 }
 .id-diagram__center {
   text-align: center;
+}
+.id-diagram__photo {
+  width: 168px;
+  height: 168px;
+  object-fit: cover;
+  object-position: top center;
+  border: 1px dashed var(--ink);
+  border-radius: 4px;
+  margin-bottom: 14px;
 }
 .id-diagram__name {
   font-family: var(--display);
@@ -481,6 +502,27 @@
   transform: translate(-2px, -2px);
   transition-delay: 0ms;
 }
+
+.card__frame {
+  font-size: 12.5px;
+  font-style: italic;
+  color: var(--ink);
+  opacity: 0.75;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+.card__repo-link {
+  display: inline-block;
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 1px;
+}
+.card__repo-link:hover { color: var(--blue); border-color: var(--blue); }
 
 .tech-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
 .tech-tag {
@@ -811,6 +853,12 @@
 .now-item__link:hover { color: var(--ink); }
 
 .filter-pills { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+.writing-empty {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--muted);
+  padding: 24px 0;
+}
 .filter-pill {
   padding: 6px 18px;
   border: 1px solid var(--ink);
@@ -1194,6 +1242,27 @@
 }
 
 /* ── Resume section ──────────────────────── */
+.resume-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 8px 16px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  border: 1px dashed var(--ink);
+  border-radius: 4px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.resume-download:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0 var(--blue);
+}
+
 .resume-block {
   margin-top: 52px;
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import '../styles/info.css'
+import portraitPhoto from '../assets/portrait.jpg'
 
 function useScrollReveal() {
   const ref = useRef(null)
@@ -163,6 +164,16 @@ function HeroSection() {
             behind them, that make tech click, so anyone, anywhere, can learn
             anything.
           </p>
+          <div className="research-interests">
+            <span className="eyebrow">research interests</span>
+            <p>
+              How AI tutors should support human tutors instead of replacing them.
+              Where a person needs to stay in the loop when a system is making a
+              pedagogical call. How feedback from the human expert becomes a safe,
+              auditable rule instead of an opaque adjustment. Most of my current
+              work is multi-agent systems, applied to education.
+            </p>
+          </div>
         </div>
       </div>
       <span className="section__watermark" aria-hidden="true">BLESSY</span>
@@ -221,6 +232,7 @@ function WhoIAmSection() {
 
         <div className="id-diagram">
           <div className="id-diagram__center">
+            <img src={portraitPhoto} alt="Blessy Konedana" className="id-diagram__photo" />
             <span className="eyebrow">portrait</span>
             <div className="id-diagram__name">Blessy <b>Konedana</b></div>
           </div>
@@ -346,6 +358,8 @@ const PROJECTS = [
     tech: ['Python', 'PyTorch', 'Transformers'],
     badge: 'nobody asked',
     longest: false,
+    frame: 'why it\'s here: understanding how a tutoring LLM works under the hood, not just calling an API.',
+    link: null,
   },
   {
     id: 'sde-agent',
@@ -354,6 +368,8 @@ const PROJECTS = [
     tech: ['LLM Orchestration', 'Multi-Agent', 'Node.js'],
     badge: 'in progress',
     longest: true,
+    frame: 'the same multi-agent pattern shows up directly in AI tutors that know when to escalate to a human.',
+    link: null,
   },
   {
     id: 'chatbot',
@@ -362,6 +378,8 @@ const PROJECTS = [
     tech: ['Python', 'SentenceBert', 'Selenium', 'AWS'],
     badge: '0.83 acc',
     longest: false,
+    frame: 'a human-AI trust problem before it was a model problem: getting people to act on an automated answer.',
+    link: null,
   },
   {
     id: 'malicious-login',
@@ -370,6 +388,8 @@ const PROJECTS = [
     tech: ['Python', 'sklearn', 'AWS SageMaker'],
     badge: '0.96 acc',
     longest: false,
+    frame: 'less about security, more about calibrating when a system should defer to a human reviewer, the question this whole site keeps coming back to.',
+    link: 'https://github.com/Kbhadassah777/Malicious_Login',
   },
   {
     id: 'saas',
@@ -378,6 +398,8 @@ const PROJECTS = [
     tech: ['LLM APIs', 'Node.js', 'React'],
     badge: 'in progress',
     longest: true,
+    frame: 'infrastructure for agents that hand off to each other, and eventually to a person, without losing context.',
+    link: null,
   },
 ]
 
@@ -407,9 +429,15 @@ function ProjectsSection() {
               <span className="badge">{p.badge}</span>
               <h3 style={{ fontSize: 18, fontWeight: 400, marginBottom: 8, paddingRight: 80 }}>{p.title}</h3>
               <p style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.6 }}>{p.desc}</p>
+              <p className="card__frame">{p.frame}</p>
               <div className="tech-tags">
                 {p.tech.map(t => <span className="tech-tag" key={t}>{t}</span>)}
               </div>
+              {p.link && (
+                <a href={p.link} target="_blank" rel="noopener noreferrer" className="card__repo-link">
+                  view on GitHub →
+                </a>
+              )}
             </div>
           ))}
         </div>
@@ -751,6 +779,13 @@ function ResumeSection() {
       <div className={`section__content ${revealed ? 'revealed' : ''}`} ref={ref}>
         <span className="eyebrow">résumé</span>
         <h2 className="headline">the <span className="headline-gradient">full picture.</span></h2>
+        <a
+          href={`${import.meta.env.BASE_URL}Blessy_Konedana_Resume.pdf`}
+          download
+          className="resume-download"
+        >
+          download CV (PDF) ↓
+        </a>
 
         {/* Experience */}
         <div className="resume-block">
@@ -868,6 +903,14 @@ function PenAndPaperSection() {
               </button>
             ))}
           </div>
+
+          {filtered.length === 0 && (
+            <p className="writing-empty">
+              {filter === 'Pre-print'
+                ? 'a pre-print is in progress, check back soon.'
+                : 'nothing here yet, check back soon.'}
+            </p>
+          )}
 
           <div className="writing-list">
             {filtered.map(w => {
