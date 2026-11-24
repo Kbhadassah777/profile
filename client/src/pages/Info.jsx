@@ -66,44 +66,19 @@ function scrollTo(id) {
 
 // ── Guide strip ──────────────────────────────────────────────────────────────
 
-const GUIDE_LINKS = {
-  hiring: [
-    { label: 'the work & innovation', sub: 'projects, built and shipped', id: 'projects' },
-    { label: 'the full resume', sub: 'experience, education, certs', id: 'resume' },
-    { label: 'why ed-tech, why now', sub: 'the reasons behind the work', id: 'about' },
-  ],
-  research: [
-    { label: 'research takes & analysis', sub: 'reviews, writing, understanding', id: 'writing' },
-    { label: 'the reasoning behind it', sub: 'passions, the "why"', id: 'about' },
-    { label: 'technical builds', sub: 'systems, agents, from-scratch work', id: 'projects' },
-  ],
-}
+const GUIDE_LINKS = [
+  { label: 'the work & innovation', sub: 'projects, built and shipped', id: 'projects' },
+  { label: 'the full resume', sub: 'experience, education, certs', id: 'resume' },
+  { label: 'why ed-tech, why now', sub: 'the reasons behind the work', id: 'about' },
+  { label: 'research takes & analysis', sub: 'reviews, writing, understanding', id: 'writing' },
+]
 
 function GuideStrip() {
-  const [audience, setAudience] = useState('hiring')
   return (
     <div className="guide-strip">
-      <div className="guide-strip__label">here for...</div>
-      <div className="guide-strip__toggle" role="tablist">
-        <button
-          role="tab"
-          aria-selected={audience === 'hiring'}
-          className={`guide-strip__tab ${audience === 'hiring' ? 'active' : ''}`}
-          onClick={() => setAudience('hiring')}
-        >
-          hiring
-        </button>
-        <button
-          role="tab"
-          aria-selected={audience === 'research'}
-          className={`guide-strip__tab ${audience === 'research' ? 'active' : ''}`}
-          onClick={() => setAudience('research')}
-        >
-          research
-        </button>
-      </div>
+      <div className="guide-strip__label">quick places I want you <span aria-hidden="true">👀</span> to look at</div>
       <div className="guide-strip__links">
-        {GUIDE_LINKS[audience].map(link => (
+        {GUIDE_LINKS.map(link => (
           <button key={link.label} className="guide-strip__link" onClick={() => scrollTo(link.id)}>
             <span className="guide-strip__link-label">{link.label}</span>
             <span className="guide-strip__link-sub">{link.sub}</span>

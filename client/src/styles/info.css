@@ -361,9 +361,9 @@
   margin: 0 auto;
   padding: 20px 24px 28px;
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 18px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
   background-image:
     repeating-linear-gradient(0deg, var(--grid-line) 0 1px, transparent 1px 28px),
     repeating-linear-gradient(90deg, var(--grid-line) 0 1px, transparent 1px 28px);
@@ -371,34 +371,9 @@
   border-bottom: 1px dashed rgba(24,43,74,0.25);
 }
 .guide-strip__label {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-  flex-shrink: 0;
-}
-.guide-strip__toggle {
-  display: flex;
-  gap: 6px;
-  flex-shrink: 0;
-}
-.guide-strip__tab {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 5px 14px;
-  border: 1px dashed var(--ink);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-}
-.guide-strip__tab.active {
-  background: var(--ink);
-  color: var(--bg);
-  border-style: solid;
+  font-family: var(--body);
+  font-size: 15px;
+  color: var(--ink);
 }
 .guide-strip__links {
   display: flex;
@@ -1378,7 +1353,7 @@
   .hero-panel { padding: 24px 20px; }
   .fig-label { top: 16px; right: 16px; }
 
-  .guide-strip { flex-direction: column; align-items: stretch; padding: 16px 20px 22px; }
+  .guide-strip { align-items: stretch; padding: 16px 20px 22px; }
   .guide-strip__links { flex-direction: column; }
 
   /* Remove startup card tilts */
